@@ -29,8 +29,59 @@ namespace FleaMarket.Controllers
          */
         #endregion
 
-        public ActionResult Detail(int id) {
+        #region 返回产品详细页
+        /// <summary>
+        /// 返回产品详细页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Detail(int? id)
+        {
+            IsLogined();
             return View();
+        }
+        #endregion
+
+        //订单提交
+        [HttpPost]
+        public ActionResult Detail(string proId)
+        {  
+            //1. 登录判断
+            if (!IsLogined())
+            {
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+            }
+
+            
+            int pid = 0;
+            if (!int.TryParse(proId, out pid))
+                return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+
+            using (ShoppingEntities se = new ShoppingEntities())
+            {
+                //查询
+                var entity = se.Product.FirstOrDefault(p => p.ProID == pid);
+                if (entity == null)
+                    return Content("<script>alert('没有该产品！');window.location.href='/Product/Detail'</script>");
+
+                //修改product表中的字段，只是让该 product 下架而已
+                //当用户点击确认收货才表示购买成功
+                var entry = se.Entry(entity);
+                entry.State = System.Data.EntityState.Unchanged;
+                entry.Property("ProIsSell").IsModified = true;
+                entity.ProIsSell = true;
+
+
+                if (se.SaveChanges() > 0)
+                {
+                    return Content("<script>alert('购买成功！');window.location.href='/Order/Index';</script>");
+                }
+                else
+                {
+                    return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+                }
+            }
         }
 
         #region 发布产品的页面
@@ -145,7 +196,7 @@ namespace FleaMarket.Controllers
 
         #region 判断是否有登录或登录过
         /// <summary>
-        /// 判断用户是否登录了
+        /// 判断用户是否登录或登录过
         /// </summary>
         /// <returns></returns>
         public Boolean IsLogined()
@@ -166,6 +217,8 @@ namespace FleaMarket.Controllers
                     Users model = dc.Users.FirstOrDefault(u => u.UserID == userid);
                     Session["LoginUser"] = model.UserName;
                     Session["UserId"] = model.UserID;
+                    //返回登录后的用户头像地址
+                    Session["userIcon"] = model.UserIcon;
                 }
                 return true;
             }

@@ -36,13 +36,20 @@ namespace FleaMarket.Controllers.API
                 //通过id和是否已出售来判断
                 var product = dc.Product.FirstOrDefault(p => p.ProID == pid && p.ProIsSell == false);
                 //用过产品的 id 来获取用户数据
-                var user = dc.Users.FirstOrDefault(u => u.UserID == product.ProWhoUser);
+                Users user = null;
+                if (product != null)
+                    user = dc.Users.FirstOrDefault(u => u.UserID == product.ProWhoUser);
+                else
+                {
+                    var ret = new { error = 400, errMessage = "没有该产品" };
+                    return Json(ret, JsonRequestBehavior.AllowGet);
+                }
 
                 //将product对象转成json格式（包含用户信息）， 订单对象为null
-                
+
                 Dictionary<String, Object> jsonProduct = new Dictionary<String, Object>();
 
-                jsonProduct.Add("product" ,ProductObjectToJson.Convert(product, null));
+                jsonProduct.Add("product", ProductObjectToJson.Convert(product, null));
 
                 //添加产品的用户
                 jsonProduct.Add("user", UserObjectToJson.Convert(user));

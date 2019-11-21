@@ -368,6 +368,7 @@
     <Content Include="Content\userImg\Icon.png" />
     <Content Include="Content\userImg\major.png" />
     <Content Include="Content\userImg\setting.png" />
+    <Content Include="Content\userImg\tip.png" />
     <Content Include="Content\userImg\upload.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

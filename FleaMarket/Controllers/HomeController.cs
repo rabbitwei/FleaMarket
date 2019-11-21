@@ -199,7 +199,7 @@ namespace FleaMarket.Controllers
                     Session["UserId"] = model.UserID;
 
                     //返回登录后的用户头像地址
-                    Session["userImg"] = model.UserIcon;
+                    Session["userIcon"] = model.UserIcon;
                     return true;
                 }
 

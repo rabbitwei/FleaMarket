@@ -547,6 +547,7 @@ namespace FleaMarket.Controllers
             string userPwd = Request.Form["userpwd"];
             //如果勾选了复选框，那么isremember的值为on；如果没有勾选，那么isremember的值为null
             string isremember = Request.Form["isremember"];
+
             Dictionary<String, Object> ret = new Dictionary<String, Object>();
             //2、检查输入的有效性
             if (string.IsNullOrEmpty(userAccount) || string.IsNullOrEmpty(userPwd))

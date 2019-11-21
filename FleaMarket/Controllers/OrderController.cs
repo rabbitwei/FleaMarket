@@ -116,6 +116,8 @@ namespace FleaMarket.Controllers
                     Users model = dc.Users.FirstOrDefault(u => u.UserID == userid);
                     Session["LoginUser"] = model.UserName;
                     Session["UserId"] = model.UserID;
+                    //返回登录后的用户头像地址
+                    Session["userIcon"] = model.UserIcon;
                 }
                 return true;
             }
