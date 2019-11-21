@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="~/Content/lib/js/jquery.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/index.css" rel="stylesheet">
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+</head>
+<body>
+    <div class="container">
+
+        <nav class="top">
+            <a href="~/Home/Index">
+                <span class="glyphicon glyphicon-home redColor"></span>
+                跳蚤市场首页
+            </a>
+            <a href="#nowhere">消息</a>
+            @{
+                String userName = "";
+                if (Session["LoginUser"] != null)
+                {
+                    userName = Session["LoginUser"].ToString() + "  ";
+                }
+                else
+                {
+                    if (Request.Cookies["isremember"] != null)
+                    {
+                        userName = Request.Cookies["isremember"].Value;
+                        Session["LoginUser"] = userName;
+                    }
+                    else
+                    {
+                        userName = "佚名";
+                    }
+
+                }
+                <span>
+                    Hi, &nbsp;<b style=" color: red">@userName</b>欢迎来跳蚤市场
+                </span>
+            }
+
+            @{
+                if (null == Session["LoginUser"])
+                {
+                    <a href="/Users/Login">请登录</a>
+                    <a href="/Users/Register">免费注册</a>
+                }
+                else
+                {
+                    <a href="/Users/Logout">注销</a>
+                }
+            }
+
+
+            <span class="pull-right">
+                @if (userName != "佚名")
+                {
+                   <a href="/Order/Index">我的订单</a>  
+                   <a href="/Users/Me">我的主页</a>
+                }
+                else
+                {
+                   <a href="/Users/Login">我的订单</a>
+                }
+                
+            </span>
+        </nav>
+
+        <div class="banner">
+            <img src="~/Content/systemImg/banner.jpg" class="img_banner" />
+            <div class="logined">
+                @{
+                    if (userName == "佚名")
+                    {
+
+                        <img src="~/Content/systemImg/Icon.png" class="Icon" />
+                        <a href="/Users/Login" class="btn_Login">请登录</a>
+                        <a href="/Users/Register" class="tip">免费注册</a>
+
+                    }
+                    else
+                    {
+                        <p>@userName</p>
+                    }
+                }
+            </div>
+        </div>
+
+
+        <div class="slodbar-wrap">
+            <div class="salebar">
+                <a href="">
+                    <div class=saleitem>
+                        <img src="~/Content/systemImg/asset.png" alt="" class="icon" />
+                        <div class="desc">
+                            <p class="name">我的闲置</p>
+                            <p class="cont">快去查看您已发布的闲置吧</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="line"></div>
+                <a href="~/Product/Release">
+                    <div class=saleitem>
+                        <img src="~/Content/systemImg/sell.png" alt="" class="icon" />
+                        <div class="desc">
+                            <p class="name">出售闲置</p>
+                            <p class="cont">校园交易，快送快达</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            @RenderBody()
+        </div>
+        <div class="font">
+            <a href="#">©2018-2019 二手交易</a>
+            <a href="#">意见反馈&nbsp;&nbsp;&nbsp;联系我们&nbsp;&nbsp;&nbsp;隐私权声明&nbsp;&nbsp;&nbsp;使用条款</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml.cshtml";
+}
+
+
+@model IEnumerable<FleaMarket.Models.TradeRecord>
+
+<div class="titlebar">
+    <div>@ViewBag.TitleBar</div>
+</div>
+
+<div class="list">
+    <table class="listtb">
+        <tr>
+            <th>交易编号</th>
+            <th>交易产品</th>
+            <th>买家</th>
+            <th>卖家</th>
+            <th>交易时间</th>
+        </tr>
+        @if (Model != null && Model.Any())   //判断Model不为空，且Model中包含元素
+        {
+            //循环遍历集合中的元素  Model是控制器传递过来的泛型集合
+            foreach (var trade in Model)
+            {
+                <tr>
+                    <td>@trade.TraID</td>
+                    <td>
+                        <a href="/Product/Detail/@trade.TraPID">@trade.Product.ProName</a>
+                    </td>
+                    <td>
+                        <a href="/">@trade.Users.UserName</a>
+                    
+                    </td>
+                    <td>@trade.Users1.UserName</td>
+                    <td>@trade.TraBuyTime</td>
+                </tr>
+            }
+        }
+    </table>
+</div>

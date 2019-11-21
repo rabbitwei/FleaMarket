@@ -1,0 +1,119 @@
+﻿@model FleaMarket.Models.Users
+
+@{
+    ViewBag.Title = "修改个人信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <title>编辑个人信息</title>
+    <link href="~/Content/css/upload.css" rel="stylesheet" />
+    <link href="~/Content/css/reset.css" rel="stylesheet" />
+    <style>
+        .info {
+            margin-top: 20px;
+        }
+        fieldset {
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 2px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            padding: 0 .625em;
+        }
+
+        label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 6px;
+            text-align: right;
+            width: 150px;
+            vertical-align: top;
+        }
+
+        input {
+            font-size: inherit;
+        }
+    </style>
+    <script>
+        //判断手机号
+        function isPhoneNumber() {
+            var tel = document.getElementById("tel").value;
+            var reg = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+            if (!reg.test(tel)) {
+                alert("请正确填写手机号");
+                return false;
+            }
+            return true;
+        }
+        //宿舍楼判断
+        function isAddress() {
+            var address = document.getElementById("address").value;
+
+            //去掉空格
+            address = address.replace(/\s+/g, "");
+            if (address.search("#") == -1) {
+                alert("楼号与房号必须用#隔开");
+                return false;
+            }
+
+            var index = address.search("#");
+            //判断 #前后是否是合法数字
+            var prefix = address.substring(0, index);
+            var suffix = address.substring(index + 1, address.length);
+            if (isNaN(prefix) || isNaN(suffix)) {
+                alert("楼号和房号必须是数字");
+                return false;
+            }
+            return true;
+
+
+        }
+        //验证
+        function validata() {
+            if (isPhoneNumber() && isAddress())
+                return true;
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="titleName">
+        <h3>编辑我的信息</h3>
+    </div>
+    <div class="info">
+        <form action="/Users/Edit" method="post" onsubmit="return validata();">
+            <fieldset>
+                <p>
+                    <label for="username">用户名:</label>
+
+                    <input type="text" id="username" name="username"value="@Model.UserName">
+                </p>
+                <p>
+                    <label for="gender">性别:</label>
+                    <select name="usergender" size="1">
+                        <option value="男" selected="@Model.UserGender.Equals("男")">男</option>
+                        <option value="女" selected="@Model.UserGender.Equals("女")">女</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="address">宿舍楼:</label>
+                    <input id="address" required type="text" name="useraddress" value="@Model.UserAddress"
+                           placeholder="格式为xx#xx" />
+                </p>
+                <p>
+                    <label for="phone">电话:</label>
+                    <input id="tel" required type="text" name="userphone" value="@Model.UserPhone" />
+                </p>
+                <p>
+                    <label for="intro">个人简介</label>
+                    @*个人简介需要判断，因为过长会报错*@
+                    <textarea name="userintro" cols="40" rows="5">@Model.UserIntro</textarea>
+                </p>
+                <input type="hidden" name="userid" value="@Model.UserID" />
+                <input type="submit" class="submit-btn">
+            </fieldset>
+        </form>
+    </div>
+</body>

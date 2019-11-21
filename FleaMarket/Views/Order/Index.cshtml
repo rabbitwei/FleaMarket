@@ -1,0 +1,101 @@
+﻿@model IEnumerable<FleaMarket.Models.TradeRecord>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.title</title>
+    <link href="~/Content/css/order.css" rel="stylesheet" />
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/Content/lib/js/jquery.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    
+</head>
+<body>
+
+    <button class="back" onclick="window.location.href='../../Home/Index'">返回首页</button>
+
+        <div id="buy" role="tabpanel" class="tab-pane active">
+            <div class="buy_intro">
+                <span class="pro">商品</span>
+                <span>价格</span>
+                <span>购买时间</span>
+                <span>操作</span>
+            </div>
+            @{
+                if (Model != null && Model.Any())
+                {
+                    foreach (var buy in Model)
+                    {
+                        if (buy.UserBuyID == ViewBag.Id)
+                        {
+                            <div class="order_item">
+                                <input type="checkbox" class="check">
+                                订单编号：@buy.TraPID
+                            </div>
+                            <div class="com">
+                                <div class="com1">
+                                    <span class="com_img"></span>
+                                    <p class="text">@buy.Product.ProName</p>
+                                </div>
+                                <div class="pri">￥&nbsp;@buy.Product.ProNewPrice</div>
+                                <div class="time">@buy.TraBuyTime</div>
+                                
+                             @if (buy.TraComment != null)
+                             {
+                                 <div class="oper">
+                                     <a style="pointer-events: none;cursor: default; color:gray;">评价订单</a>
+                                     <a>取消订单</a>
+                                     <a>确认收款</a>
+                                 </div>
+                             }
+                             else
+                             {
+                                 <div class="oper">
+                                     <a data-toggle="modal" data-target="#myModal">评价订单</a>
+                                     <a>取消订单</a>
+                                     <a>确认收款</a>
+                                 </div>
+                                 <form action="/Order/Submit/@buy.TraPID" method="post">
+                                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                         <div class="modal-dialog">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                     <h4 class="modal-title" id="myModalLabel">亲~请对此次购买旅程进行评价！</h4>
+                                                 </div>
+                                                 <div class="modal-body">
+                                                     <textarea style="resize:none;width:100%;height:100px;" placeholder="请输入内容" name="text"></textarea>
+                                                 </div>
+                                                 <div class="modal-footer">
+                                                     <input type="submit" class="btn btn-primary" id="sub" />
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </form>
+                             }                                
+                            </div>
+                        }                            
+                    }
+                }
+                else
+                {
+                    <div class="order_item">
+                        <input type="checkbox" class="check">
+                        订单编号：无订单
+                    </div>
+                    <div class="com">  
+                        <h1>无购买记录！</h1>
+                    </div>
+                }
+              }
+            </div>
+
+
+</body>
+</html>

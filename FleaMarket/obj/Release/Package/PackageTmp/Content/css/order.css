@@ -1,0 +1,106 @@
+﻿ #buy {
+            width: 80%;
+            height: 500px;
+            margin: 0 auto;
+        }
+        .back{
+           position:absolute;
+           top:6px;
+            right:10%;
+            float:right;
+        }
+
+            #buy .buy_intro{
+                width: 100%;
+                height: 40px;
+                background-color: lightgrey;
+                line-height: 40px;
+            }
+
+                #buy .buy_intro span {
+                    display: inline-block;
+                    height: 100%;
+                    text-align: center;
+                }
+
+                #buy .buy_intro .pro {
+                    width: 41%;
+                }
+
+                #buy .buy_intro span:nth-child(n+2) {
+                    width: 19%;
+                }
+
+        .order_item {
+            background: honeydew;
+            border-top: 1px solid black;
+        }
+
+            .order_item .check {
+                margin: 10px;
+            }
+
+        #buy .com{
+            width: 100%;
+            height: 130px;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+            #buy .com .com1 , #buy .com .pri , #buy .com .time , #buy .com .oper{
+                float: left;
+                background-color: white;
+                border: 1px solid #bbbbbb;
+                width: 19.6%;
+                height: 100%;
+            }
+
+                #buy .com .com1 {
+                    width: 41%;
+                    padding: 0px;
+                }
+        #buy .com .com_img {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 14px 30px;
+            float: left;
+        }
+
+        #buy .com .text {
+            width: 290px;
+            height: 100%;
+            display: inline-block;
+            float: right;
+            box-sizing: border-box;
+            word-break: break-all;
+            padding: 34px 20px;
+            letter-spacing: 2px;
+            font-size: large;
+            position:absolute;
+        }
+
+        #buy .com .pri{
+            text-align: center;
+            line-height: 130px;
+            color: red;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #buy .com .time {
+            text-align: center;
+            line-height: 130px;
+            font-size: 16px;
+        }
+         #buy .com .oper{
+             text-align:center;
+             font-size:18px;
+             box-sizing:border-box;
+         }
+         #buy .com .oper a {
+             display:inline-block;
+             width:100%;
+             margin-top:14px;
+            
+         }

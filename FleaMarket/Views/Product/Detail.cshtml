@@ -1,0 +1,94 @@
+﻿@model FleaMarket.Models.Product
+@{
+    ViewBag.Title = "产品详细页";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/reset.css" rel="stylesheet" />
+<link href="~/Content/css/Detail.css" rel="stylesheet" />
+<script src="~/Content/js/jquery-3.2.js"></script>
+
+<div class="content">
+    <div id="book-pic">
+        <div class="book-big">
+            <img src="" id="img">
+        </div>
+        <span class="tip"></span>
+    </div> <!-- book-pic-end -->
+
+    <div id="book-info">
+        <span class="book-name" id="proName"></span>
+        <!--<span class="book-publish"></span>-->
+        <span class="book-price">
+            <p>现价 <a class="final-price" id="newPrice"></a></p>
+            <p>原价 <a class="orignal-price" id="oldPrice"></a></p>
+            <p>成色 <a class="condition" id="level"></a></p>
+        </span>
+        <span class="book-descr">
+            <!--<p>商品描述<a class="book-desc">有点水印,但并不影响阅读</a></p>-->
+            <p>发布时间<a class="upload-time" id="time"></a></p>
+        </span>
+        <span class="buy-now">立即购买</span>
+    </div> <!-- book-info-end -->
+
+    <div id="seller-info">
+        <a class="seller-name" id="sellerName"></a>
+        <span class="seller-span1">
+            QQ<a class="seller-num" id="sellerQQ"></a>
+        </span>
+        <span class="seller-span2">
+            <p>电话<a class="seller-num" id="sellerPhone"></a></p>
+            <p>宿舍<a class="seller-adr" id="sellerAddress"></a></p>
+        </span>
+
+    </div><!-- seller-info-end -->
+    <div id="book-content">
+        <span class="book-tip" id="intro"></span>
+    </div>
+</div><!--  container -->
+
+<script>
+    //前端需要通过首页传递过来的 url 地址中的最后一个参数来查询 Product
+    $(function () {
+        //alert(window.location.href);
+        var proUrl = window.location.href.toString();
+        //获取最后一个 "/"的索引
+        var index = proUrl.lastIndexOf("/");
+        var pid = proUrl.substr(index + 1, proUrl.length);
+        pid = parseInt(pid);
+
+        //不是数字直接return
+        if (!(typeof pid == "number"))
+            return;
+        console.log(pid);
+
+        //服务端的url地址是 RESTful 风格的
+        var getDetail = "/api/Product/getDetail/" + pid;
+        $.get(getDetail, null, function (ret) {
+            //console.log(ret);
+            var product = ret["product"];
+            var user = ret["user"];
+            
+            //给页面指定标签赋值
+            $("#img").attr("src", "/Content/productImg/" + product["ProImgUrl"]);
+            $("#proName").text(product["ProName"]);
+            $("#newPrice").text("￥" + product["ProNewPrice"]);
+            $("#oldPrice").text("￥" + product["ProOldPrice"]);
+            $("#level").text(product["ProLevel"] + "成新");
+            $("#time").text(product["ProReleaseTime"]);
+            $("#intro").text(product["ProIntro"]);
+
+            $("#sellerName").text(user["UserName"]);
+            $("#sellerQQ").text(user["UserQQ"]);
+            $("#sellerPhone").text(user["UserPhone"]);
+            $("#sellerAddress").text(user["UserAddress"]);
+
+        });
+
+
+
+
+
+    });
+
+</script>

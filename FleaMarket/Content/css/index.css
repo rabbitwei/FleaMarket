@@ -1,0 +1,436 @@
+/* nav top */
+body {
+    font-size: 15px;
+    font-family: Arial;
+    background-color: #f2f2f2;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    color: #999;
+    text-decoration: none;
+}
+
+.redColor {
+    color: #C40000 !important;
+}
+
+.container {
+    /*margin: 0 auto;*/
+    /*width: 1080px;*/
+    background-color: #fff;
+}
+
+/* 头部 */
+nav.top {
+    background-color: #f2f2f2;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+    nav.top span,
+    nav.top a {
+        color: #999;
+        margin: 0px 10px 0px 10px;
+    }
+
+        nav.top a:hover {
+            color: #C40000;
+            text-decoration: none;
+        }
+
+/* 未被访问的链接 */
+a:visited {
+    text-decoration: none;
+}
+
+/* 已被访问的链接 */
+a:hover {
+    text-decoration: none;
+}
+
+/* 鼠标指针移动到链接上 */
+a:active {
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+
+
+
+/* banner部分 */
+.banner {
+    width: 100%;
+    height: 380px;
+    /*background-color: skyblue;*/
+    margin-top: 20px;
+    position: relative;
+}
+
+    .banner .img_banner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .banner .logined {
+        width: 370px;
+        height: 210px;
+        background-color: #fff;
+        position: absolute;
+        right: 0px;
+        bottom: -10px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .banner .logined .Icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 200px;
+        }
+
+            .banner .logined .Icon p {
+                text-align: center;
+            }
+
+        .banner .logined .btn_Login {
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            background-color: #ffd84d;
+            text-align: center;
+        }
+
+        .banner .logined .tip {
+            text-align: center;
+        }
+
+/* 发布闲置bar */
+.slodbar-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.salebar {
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+    height: 100px;
+    background-color: #f2f2f2;
+    justify-content: center;
+    align-items: center;
+}
+
+    .salebar .saleitem .icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .salebar .saleitem .desc .name {
+        font-family: PingFangSC-Semibold;
+        font-weight: 700;
+        color: #222;
+        font-size: 18px;
+        height: 25px;
+        line-height: 25px;
+    }
+
+    .salebar .saleitem .desc span {
+        color: #999;
+    }
+
+    .salebar .saleitem .desc .cont {
+        color: #222;
+        font-size: 12px;
+        margin-top: 2px;
+        height: 17px;
+        line-height: 17px;
+    }
+
+    .salebar .line {
+        width: 5px;
+        height: 60px;
+        margin-left: 90px;
+        margin-right: 90px;
+        /*align-items: center;*/
+        background-color: #fff;
+    }
+
+    .salebar .saleitem {
+        display: flex;
+        width: 210px;
+        height: 56px;
+    }
+
+/* 分类bar */
+.tabbar {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    margin-top: 10px;
+    background-color: #ffff77;
+    padding-left: 60px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+
+    .tabbar .category {
+        font-size: 18px;
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+        .tabbar .category:hover {
+            font-size: 40px;
+            color: red;
+        }
+
+.item-list {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    min-height: 750px;
+}
+
+.item > a {
+    display: block;
+    width: 200px;
+    height: 330px;
+}
+
+.item-list .item {
+    float: left;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    margin-left: 6px;
+    margin-bottom: 10px;
+}
+
+    .item-list .item .item-img {
+        width: 100%;
+        height: 200px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+        background-color: #ddd;
+        background-size: cover;
+    }
+
+    .item-list .item .item-info {
+        width: 170px;
+        margin: 10px 15px 0px 15px;
+        box-sizing: border-box;
+        padding-bottom: 14px;
+        border-bottom: .5px solid gray;
+    }
+
+        .item-list .item .item-info .item-title {
+            font-size: 13px;
+            color: #222;
+            height: 40px;
+            width: 170px;
+            line-height: 20px;
+            overflow: hidden;
+        }
+
+        .item-list .item .item-info .price {
+            display: flex;
+            flex-direction: row;
+        }
+
+            .item-list .item .item-info .price .price-unit {
+                font-size: 10px;
+                color: #f44;
+                height: 14px;
+                line-height: 22px;
+            }
+
+            .item-list .item .item-info .price .price-value {
+                font-size: 16px;
+                color: #f44;
+                height: 18px;
+                line-height: 18px;
+            }
+
+    .item-list .item .user-line {
+        height: 28px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+.user-info {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 170px;
+    height: 20px;
+}
+
+    .user-info > p {
+        margin-bottom: 0px;
+    }
+
+.usericon {
+    width: 20px;
+    height: 17px;
+    margin-right: 10px;
+    border-radius: 100%;
+}
+
+.user-name {
+    font-size: 12px;
+    color: #222;
+    height: 17px;
+    width: 80px;
+    line-height: 17px;
+    text-align: center;
+}
+
+
+.item-list .list-count {
+    width: 500px;
+    height: 50px;
+    position: absolute;
+    bottom: 24px;
+    left: 36%;
+}
+
+.font {
+    border-top: 1px solid #ccc;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+    .font a {
+        text-align: center;
+        font-size: 15px;
+        /*margin-left: 30%;*/
+        text-decoration: none;
+        color: gray;
+    }
+
+/*商品详细页banner*/
+.Detail_banner {
+    width: 100%;
+    height: 80px;
+    background-color: #ffda44;
+}
+
+    .Detail_banner .logo, .menu a {
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+    }
+
+    .Detail_banner .logo {
+        /*display:block;*/
+        width: 250px;
+        background-color: red;
+        float: left;
+    }
+
+    .Detail_banner .menu a {
+        /*display:block;*/
+        width: 385px;
+        float: right;
+    }
+
+    .Detail_banner .menu span {
+        width: 5px;
+        float: right;
+        height: 80px;
+        margin-left: 10px;
+        margin-right: 10px;
+        background-color: #fff;
+    }
+
+.Detail {
+    /*width:100%;*/
+    height: 600px;
+    background-color: skyblue;
+    margin-top: 10px;
+}
+
+    .Detail .ProUser {
+        /*width:100%;*/
+        height: 80px;
+        background-color: yellowgreen;
+    }
+
+    .Detail .ProDetail .SlideShow, .Buy, .Info {
+        height: 400px;
+        float: left;
+    }
+
+    .Detail .ProDetail .SlideShow {
+        width: 600px;
+        /*background-color:green;*/
+    }
+
+        .Detail .ProDetail .SlideShow img {
+            width: 600px;
+            height: 400px;
+        }
+
+    .Detail .ProDetail .Buy {
+        width: 450px;
+        background-color: skyblue;
+    }
+
+        .Detail .ProDetail .Buy .Price {
+            padding-left: 10px;
+            height: 80px;
+            border-bottom-color: blue;
+        }
+
+            .Detail .ProDetail .Buy .Price li {
+                /*padding:5px;*/
+                list-style: none;
+                height: 40px;
+                line-height: 40px;
+            }
+
+        .Detail .ProDetail .Buy .Cart {
+            height: 320px;
+            padding-left: 10px;
+            /*background-color:green;*/
+        }
+
+            .Detail .ProDetail .Buy .Cart li {
+                list-style: none;
+                background-color: green;
+                /*padding:5px;*/
+                line-height: 65px;
+                height: 65px;
+            }
+
+            .Detail .ProDetail .Buy .Cart ul li a {
+                padding: 0px 50px;
+            }
+
+    .Detail .ProDetail .Info {
+        width: 100%;
+        background-color: yellow;
+    }

@@ -1,0 +1,60 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<FleaMarket.Models.Product>
+@*@using Webdiyer.WebControls.Mvc;
+@model PagedList<FleaMarket.Models.Product>*@
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/MvcPager.js"></script>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@* 这里是分部视图 *@
+<div class="items" id="items">
+    @*@Html.Partial("_ItemList", Model)*@
+    @Html.Partial("_ItemTable", Model)
+    <div class="list-count" id="listCount"></div>
+</div>
+
+
+
+
+
+@* 分页 *@
+<div class="list-count">
+    @*
+    @{
+            MvcHtmlString html;
+            if (!Model.Any())
+            {
+                html = null;
+            }
+            else
+            {
+                html = Html.PagedListPager(Model,
+                page => Url.Action("Index", new { page = page, categId = ViewData["categoryId"] }),
+                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                        new PagedListRenderOptions
+                        {
+                            //Display = PagedListDisplayMode.IfNeeded,
+                            LinkToFirstPageFormat = "首页",
+                            LinkToPreviousPageFormat = "上一页",
+                            LinkToNextPageFormat = "下一页",
+                            LinkToLastPageFormat = "尾页",
+                            MaximumPageNumbersToDisplay = 3,
+                        },
+                        new AjaxOptions()
+                        {
+                            //InsertionMode = InsertionMode.Replace,
+                            HttpMethod = "GET",
+                            UpdateTargetId = "items",
+                        }
+                ));
+            }
+        }
+        @html
+*@
+</div>

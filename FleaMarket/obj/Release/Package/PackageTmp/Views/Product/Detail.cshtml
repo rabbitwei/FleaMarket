@@ -1,0 +1,255 @@
+﻿@model FleaMarket.Models.Product
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/index.css" rel="stylesheet">
+    <script src="~/Content/lib/js/jquery.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <title>Detail</title>
+
+    <script>
+       
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav class="top">
+            <a href="~/Home/Index">
+                <span class="glyphicon glyphicon-home redColor"></span>
+                跳蚤市场首页
+            </a>
+            <a href="#nowhere">消息</a>
+            @{
+                String userName = "";
+                if (Session["LoginUser"] != null)
+                {
+                    userName = Session["LoginUser"].ToString() + "  ";
+                }
+                else
+                {
+                    if (Request.Cookies["isremember"] != null)
+                    {
+                        userName = Request.Cookies["isremember"].Value;
+                        Session["LoginUser"] = userName;
+                    }
+                    else
+                    {
+                        userName = "佚名";
+                    }
+
+                }
+                <span>
+                    Hi, &nbsp;<b style=" color: red">@userName</b>欢迎来跳蚤市场
+                </span>
+            }
+
+            @{
+                if (null == Session["LoginUser"])
+                {
+                    <a href="/Users/Login">请登录</a>
+                    <a href="/Users/Register">免费注册</a>
+                }
+                else
+                {
+                    <a href="/Users/Logout">注销</a>
+                }
+            }
+
+
+            <span class="pull-right">
+                @if (userName != "佚名")
+{
+    <a href="/Order/Index">我的订单</a>
+}
+else
+{
+    <a href="/Users/Login">我的订单</a>
+}
+                
+            </span>
+        </nav>
+        <div class="Detail_banner">
+            <div class="logo">
+                <a href="~/Home/Index">这里放logo<img src="#" alt="咸鱼" /></a>
+            </div>
+            <div class="menu">
+                <a href="#">发布闲置</a>
+                <span></span>
+                <a href="#">我的闲置</a>
+            </div>
+        </div>
+        <div class="Detail">
+            <div class="ProUser">
+                
+            </div>
+            <div class="ProDetail">
+
+                @if (Model != null)
+                {
+                        <div class="SlideShow">
+                            <!-- 轮播图部分 -->
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                                </ol>
+
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <img src="@Model.ProImgUrl">
+                                    </div>
+                                    <div class="item">
+                                            <img src="~/Content/userImg/images/slide_02_640x340.jpg">
+                                        </div>
+                                        <div class="item">
+                                            <img src="~/Content/userImg/images/slide_03_640x340.jpg">
+                                        </div>
+                                        <div class="item">
+                                            <img src="~/Content/userImg/images/slide_04_640x340.jpg">
+                                        </div>
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="Buy">
+                            <div class="Price">
+                                <ul>
+                                    <li>@Model.ProName</li>
+                                    <li>@Model.ProNewPrice - <s>@Model.ProOldPrice</s></li>
+                                </ul>
+
+                            </div>
+                            <div class="Cart">
+                                <ul>
+                                    <li>@Model.ProLevel</li>
+                                    <li>@Model.Users.UserAddress</li>
+                                    <li>@Model.Users.UserPhone</li>
+                                    <li>
+                                        <button data-toggle="modal" data-target="#myModal"><img src="~/Content/systemImg/sale.png" alt="立即购买" /></button>
+                                        @if (Session["LoginUser"] != null)
+                                        {
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel">订单确定</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <img src="~/Content/userImg/images/slide_01_640x340.jpg" alt="该商品的图片" style="width:200px;height:200px;" />
+                                                        <h2>商品名字：@Model.ProName</h2> 
+                                                        <h4>商品价格：@Model.ProNewPrice</h4>  
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary">确认付款</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        else
+                                        {
+                                        if (Request.Cookies["isremember"] != null)
+                                        {
+                                        userName = Request.Cookies["isremember"].Value;
+                                        Session["LoginUser"] = userName;
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel">订单确定</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <img src="~/Content/userImg/images/slide_01_640x340.jpg" alt="该商品的图片" style="width:200px;height:200px;" />
+                                                        <h2>商品名字：@Model.ProName</h2> 
+                                                        <h4>商品价格：@Model.ProNewPrice</h4>  
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary">确认付款</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        }
+                                        else
+                                        {
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel">请登录后进行购买</h4>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" onclick="window.location.href='../../Users/Login'">确认</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+
+                                        }
+                                        @*按钮触发模态框*@
+                                       
+                                        
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="Info">
+                            @* 导航栏 *@
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#info" aria-controls="info" role="tab" data-toggle="tab">商品简介</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">交流</a>
+                                </li>
+                            </ul>
+                            @* 导航栏内容 *@
+                            <div class="tab-content container-fluid">
+                                <div role="tabpanel" class="tab-pane active" id="info">
+                                    @Model.ProIntro
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="chat">
+                                    这里和卖家说话
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

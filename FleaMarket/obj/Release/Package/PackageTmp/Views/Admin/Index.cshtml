@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "后台用户";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml.cshtml";
+}
+@model IEnumerable<FleaMarket.Models.Administrators>
+
+
+
+<div class="titlebar">
+    <div>@ViewBag.TitleBar</div>
+</div>
+<div class="newbt">
+    <input type="button" value="新增用户" onclick="window.location.href = '/Admin/Add'"/>
+</div>
+<div class="list">
+    <table class="listtb" style="width:60%">
+        <tr>
+            <th>用户编号</th>
+            <th>用户名称</th>
+            <th>操作</th>
+        </tr>
+        @if (Model != null && Model.Any())   //判断Model不为空，且Model中包含元素
+        {
+            //循环遍历集合中的元素  Model是控制器传递过来的泛型集合
+            foreach (var admin in Model)
+            {
+                <tr>
+                    <td>@admin.AdminID</td>
+                    <td>@admin.AdminName</td>
+
+                    <td>
+                        <a href="/Admin/Edit/@admin.AdminID">编辑</a> |
+                        <a href="/Admin/Delete/@admin.AdminID" onclick="return confirm('确认删除吗？')">删除</a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

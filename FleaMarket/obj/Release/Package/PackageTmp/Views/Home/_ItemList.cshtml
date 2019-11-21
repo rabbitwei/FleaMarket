@@ -1,0 +1,27 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<FleaMarket.Models.Product>
+
+
+<div class="text-center">
+    @Ajax.Pager(Model, new PagerOptions
+    {
+        PageIndexParameterName = "page",
+        ContainerTagName = "ul",
+        CssClass = "pagination",
+        CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+        DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+        PagerItemTemplate = "<li>{0}</li>"
+    }).AjaxOptions(a => a.SetUpdateTargetId("listCount"))
+</div>
+@{ Html.RenderPartial("_ItemTable"); }
+<div class="text-center">
+    @Ajax.Pager(Model, new PagerOptions
+{
+    PageIndexParameterName = "page",
+    ContainerTagName = "ul",
+    CssClass = "pagination",
+    CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+    PagerItemTemplate = "<li>{0}</li>"
+}).AjaxOptions(a => a.SetUpdateTargetId("listCount"))
+</div>

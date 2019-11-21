@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ShoppingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Administrators">
+    <Key>
+      <PropertyRef Name="AdminID" />
+    </Key>
+    <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdminName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AdminPwd" Type="varchar" MaxLength="18" Nullable="false" />
+    <Property Name="AdminRole" Type="int" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategID" />
+    </Key>
+    <Property Name="CategID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Favorite">
+    <Key>
+      <PropertyRef Name="FavID" />
+    </Key>
+    <Property Name="FavID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FavPID" Type="int" Nullable="false" />
+    <Property Name="FavUID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProLevel" Type="int" />
+    <Property Name="ProOldPrice" Type="money" Nullable="false" />
+    <Property Name="ProNewPrice" Type="money" />
+    <Property Name="ProCateg" Type="int" Nullable="false" />
+    <Property Name="ProWhoUser" Type="int" Nullable="false" />
+    <Property Name="ProIntro" Type="nvarchar" MaxLength="200" />
+    <Property Name="ProImgUrl" Type="nvarchar" MaxLength="100" />
+    <Property Name="ProReleaseTime" Type="datetime" />
+    <Property Name="ProIsSell" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SRole">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleType" Type="nvarchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TradeRecord">
+    <Key>
+      <PropertyRef Name="TraID" />
+    </Key>
+    <Property Name="TraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TraPID" Type="int" />
+    <Property Name="UserBuyID" Type="int" />
+    <Property Name="UserSellID" Type="int" />
+    <Property Name="TraComment" Type="nvarchar" MaxLength="150" />
+    <Property Name="TraBuyTime" Type="smalldatetime" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserAccount" Type="varchar" MaxLength="18" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserPwd" Type="varchar" MaxLength="18" Nullable="false" />
+    <Property Name="UserGender" Type="char" MaxLength="2" Nullable="false" />
+    <Property Name="UserAddress" Type="varchar" MaxLength="50" />
+    <Property Name="UserIntro" Type="varchar" MaxLength="50" />
+    <Property Name="UserPhone" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="UserStatus" Type="tinyint" />
+    <Property Name="UserRole" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Favorite_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="FavPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Favorite_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="FavUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pro_Cate">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProCateg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pro_User">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProWhoUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_BuyUser">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="UserBuyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_Pro">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="TraPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_SellUser">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="UserSellID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_SRole">
+    <End Role="SRole" Type="Self.SRole" Multiplicity="1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SRole">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="UserRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PK_Admin_PRole">
+    <End Role="SRole" Type="Self.SRole" Multiplicity="0..1" />
+    <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SRole">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Administrators">
+        <PropertyRef Name="AdminRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ShoppingModelStoreContainer">
+    <EntitySet Name="Administrators" EntityType="Self.Administrators" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Favorite" EntityType="Self.Favorite" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SRole" EntityType="Self.SRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TradeRecord" EntityType="Self.TradeRecord" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Favorite_Product" Association="Self.FK_Favorite_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Favorite" EntitySet="Favorite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Favorite_Users" Association="Self.FK_Favorite_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Favorite" EntitySet="Favorite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pro_Cate" Association="Self.FK_Pro_Cate">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pro_User" Association="Self.FK_Pro_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_BuyUser" Association="Self.FK_Tra_BuyUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_Pro" Association="Self.FK_Tra_Pro">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_SellUser" Association="Self.FK_Tra_SellUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_SRole" Association="Self.FK_Users_SRole">
+      <End Role="SRole" EntitySet="SRole" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="PK_Admin_PRole" Association="Self.PK_Admin_PRole">
+      <End Role="SRole" EntitySet="SRole" />
+      <End Role="Administrators" EntitySet="Administrators" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

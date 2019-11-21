@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ShoppingModelStoreContainer" CdmEntityContainer="ShoppingEntities1">
+    <EntitySetMapping Name="Administrators">
+      <EntityTypeMapping TypeName="ShoppingModel.Administrators">
+        <MappingFragment StoreEntitySet="Administrators">
+          <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+          <ScalarProperty Name="AdminName" ColumnName="AdminName" />
+          <ScalarProperty Name="AdminPwd" ColumnName="AdminPwd" />
+          <ScalarProperty Name="AdminRole" ColumnName="AdminRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Category">
+      <EntityTypeMapping TypeName="ShoppingModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="CategID" ColumnName="CategID" />
+          <ScalarProperty Name="CategName" ColumnName="CategName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Favorite">
+      <EntityTypeMapping TypeName="ShoppingModel.Favorite">
+        <MappingFragment StoreEntitySet="Favorite">
+          <ScalarProperty Name="FavID" ColumnName="FavID" />
+          <ScalarProperty Name="FavPID" ColumnName="FavPID" />
+          <ScalarProperty Name="FavUID" ColumnName="FavUID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product">
+      <EntityTypeMapping TypeName="ShoppingModel.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="ProID" ColumnName="ProID" />
+          <ScalarProperty Name="ProName" ColumnName="ProName" />
+          <ScalarProperty Name="ProLevel" ColumnName="ProLevel" />
+          <ScalarProperty Name="ProOldPrice" ColumnName="ProOldPrice" />
+          <ScalarProperty Name="ProNewPrice" ColumnName="ProNewPrice" />
+          <ScalarProperty Name="ProCateg" ColumnName="ProCateg" />
+          <ScalarProperty Name="ProWhoUser" ColumnName="ProWhoUser" />
+          <ScalarProperty Name="ProIntro" ColumnName="ProIntro" />
+          <ScalarProperty Name="ProImgUrl" ColumnName="ProImgUrl" />
+          <ScalarProperty Name="ProReleaseTime" ColumnName="ProReleaseTime" />
+          <ScalarProperty Name="ProIsSell" ColumnName="ProIsSell" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SRole">
+      <EntityTypeMapping TypeName="ShoppingModel.SRole">
+        <MappingFragment StoreEntitySet="SRole">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleType" ColumnName="RoleType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TradeRecord">
+      <EntityTypeMapping TypeName="ShoppingModel.TradeRecord">
+        <MappingFragment StoreEntitySet="TradeRecord">
+          <ScalarProperty Name="TraID" ColumnName="TraID" />
+          <ScalarProperty Name="TraPID" ColumnName="TraPID" />
+          <ScalarProperty Name="UserBuyID" ColumnName="UserBuyID" />
+          <ScalarProperty Name="UserSellID" ColumnName="UserSellID" />
+          <ScalarProperty Name="TraComment" ColumnName="TraComment" />
+          <ScalarProperty Name="TraBuyTime" ColumnName="TraBuyTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="ShoppingModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserAccount" ColumnName="UserAccount" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserPwd" ColumnName="UserPwd" />
+          <ScalarProperty Name="UserGender" ColumnName="UserGender" />
+          <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+          <ScalarProperty Name="UserIntro" ColumnName="UserIntro" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

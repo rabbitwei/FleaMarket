@@ -1,0 +1,101 @@
+﻿@model FleaMarket.Models.Users
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+    <link href="~/Content/css/register.css" rel="stylesheet" />  
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+   
+</head>
+@using (Html.BeginForm("Register", "Users", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{ 
+<body>
+        <form id="form1">
+            <table>
+                <tr class="firstline">
+                    <td colspan="2">请注册一个账号</td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserAccount)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserAccount)
+                        @Html.ValidationMessageFor(u => u.UserAccount)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserName)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserName)
+                        @Html.ValidationMessageFor(u => u.UserName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserPwd)</td>
+                    <td class="tdright">
+                        @Html.PasswordFor(u => u.UserPwd)
+                        @Html.ValidationMessageFor(u => u.UserPwd)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ConfirmPwd)</td>
+                    <td class="tdright">
+                        @Html.PasswordFor(u => u.ConfirmPwd)
+                        @Html.ValidationMessageFor(u => u.ConfirmPwd)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserGender)</td>
+                    <td class="tdright">
+                        @Html.RadioButtonFor(u => u.UserGender, "男")男
+                        @Html.RadioButtonFor(u => u.UserGender, "女")女
+                        @Html.ValidationMessageFor(u => u.UserGender)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserIntro)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserIntro)
+                        @Html.ValidationMessageFor(u => u.UserIntro)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserPhone)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserPhone)
+                        @Html.ValidationMessageFor(u => u.UserPhone)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserQQ)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserQQ)
+                        @Html.ValidationMessageFor(u => u.UserQQ)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.UserIcon)</td>
+                    <td class="tdright">
+                        @Html.TextBoxFor(u => u.UserIcon, new { type = "file" })
+                        @Html.ValidationMessageFor(u => u.UserIcon)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="lastline" colspan="2">
+                        <input type="submit" value="注册" />
+                        <input type="button" value="取消" onclick='window.open("/Home/Index")'/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+</body>
+}
+</html>

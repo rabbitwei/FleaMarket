@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ShoppingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Administrators">
+    <Key>
+      <PropertyRef Name="AdminID" />
+    </Key>
+    <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdminName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AdminPwd" Type="String" MaxLength="18" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AdminRole" Type="Int32" />
+    <NavigationProperty Name="SRole" Relationship="Self.PK_Admin_PRole" FromRole="Administrators" ToRole="SRole" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategID" />
+    </Key>
+    <Property Name="CategID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Pro_Cate" FromRole="Category" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Favorite">
+    <Key>
+      <PropertyRef Name="FavID" />
+    </Key>
+    <Property Name="FavID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FavPID" Type="Int32" Nullable="false" />
+    <Property Name="FavUID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Favorite_Product" FromRole="Favorite" ToRole="Product" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Favorite_Users" FromRole="Favorite" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProLevel" Type="Int32" />
+    <Property Name="ProOldPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ProNewPrice" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ProCateg" Type="Int32" Nullable="false" />
+    <Property Name="ProWhoUser" Type="Int32" Nullable="false" />
+    <Property Name="ProIntro" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProImgUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProReleaseTime" Type="DateTime" Precision="3" />
+    <Property Name="ProIsSell" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Pro_Cate" FromRole="Product" ToRole="Category" />
+    <NavigationProperty Name="Favorite" Relationship="Self.FK_Favorite_Product" FromRole="Product" ToRole="Favorite" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Pro_User" FromRole="Product" ToRole="Users" />
+    <NavigationProperty Name="TradeRecord" Relationship="Self.FK_Tra_Pro" FromRole="Product" ToRole="TradeRecord" />
+  </EntityType>
+  <EntityType Name="SRole">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Administrators" Relationship="Self.PK_Admin_PRole" FromRole="SRole" ToRole="Administrators" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_SRole" FromRole="SRole" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="TradeRecord">
+    <Key>
+      <PropertyRef Name="TraID" />
+    </Key>
+    <Property Name="TraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TraPID" Type="Int32" />
+    <Property Name="UserBuyID" Type="Int32" />
+    <Property Name="UserSellID" Type="Int32" />
+    <Property Name="TraComment" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="TraBuyTime" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Tra_Pro" FromRole="TradeRecord" ToRole="Product" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Tra_BuyUser" FromRole="TradeRecord" ToRole="Users" />
+    <NavigationProperty Name="Users1" Relationship="Self.FK_Tra_SellUser" FromRole="TradeRecord" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserAccount" Type="String" MaxLength="18" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserPwd" Type="String" MaxLength="18" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserGender" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserIntro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserPhone" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserStatus" Type="Byte" />
+    <Property Name="UserRole" Type="Int32" Nullable="false" />
+    <Property Name="UserIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserQQ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Favorite" Relationship="Self.FK_Favorite_Users" FromRole="Users" ToRole="Favorite" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Pro_User" FromRole="Users" ToRole="Product" />
+    <NavigationProperty Name="SRole" Relationship="Self.FK_Users_SRole" FromRole="Users" ToRole="SRole" />
+    <NavigationProperty Name="TradeRecord" Relationship="Self.FK_Tra_BuyUser" FromRole="Users" ToRole="TradeRecord" />
+    <NavigationProperty Name="TradeRecord1" Relationship="Self.FK_Tra_SellUser" FromRole="Users" ToRole="TradeRecord" />
+  </EntityType>
+  <Association Name="PK_Admin_PRole">
+    <End Role="SRole" Type="Self.SRole" Multiplicity="0..1" />
+    <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SRole">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Administrators">
+        <PropertyRef Name="AdminRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pro_Cate">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProCateg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Favorite_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="FavPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Favorite_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="FavUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pro_User">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProWhoUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_Pro">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="TraPID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_SRole">
+    <End Role="SRole" Type="Self.SRole" Multiplicity="1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SRole">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="UserRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_BuyUser">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="UserBuyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tra_SellUser">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="TradeRecord">
+        <PropertyRef Name="UserSellID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ShoppingEntities3" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Administrators" EntityType="Self.Administrators" />
+    <EntitySet Name="Category" EntityType="Self.Category" />
+    <EntitySet Name="Favorite" EntityType="Self.Favorite" />
+    <EntitySet Name="Product" EntityType="Self.Product" />
+    <EntitySet Name="SRole" EntityType="Self.SRole" />
+    <EntitySet Name="TradeRecord" EntityType="Self.TradeRecord" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="PK_Admin_PRole" Association="Self.PK_Admin_PRole">
+      <End Role="SRole" EntitySet="SRole" />
+      <End Role="Administrators" EntitySet="Administrators" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pro_Cate" Association="Self.FK_Pro_Cate">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Favorite_Product" Association="Self.FK_Favorite_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Favorite" EntitySet="Favorite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Favorite_Users" Association="Self.FK_Favorite_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Favorite" EntitySet="Favorite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pro_User" Association="Self.FK_Pro_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_Pro" Association="Self.FK_Tra_Pro">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_SRole" Association="Self.FK_Users_SRole">
+      <End Role="SRole" EntitySet="SRole" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_BuyUser" Association="Self.FK_Tra_BuyUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tra_SellUser" Association="Self.FK_Tra_SellUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TradeRecord" EntitySet="TradeRecord" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

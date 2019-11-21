@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml.cshtml";
+}
+
+@model IEnumerable<FleaMarket.Models.Product>
+
+<div class="titlebar">
+    <div>@ViewBag.TitleBar</div>
+</div>
+
+<div class="list">
+    <table class="listtb">
+        <tr>
+            <th>产品编号</th>
+            <th>产品名</th>
+            <th>成色</th>
+            <th>新价格</th>
+            <th>发布用户</th>
+            <th>发布时间</th>
+            <th>操作</th>
+        </tr>
+        @if (Model != null && Model.Any())   //判断Model不为空，且Model中包含元素
+        {
+            //循环遍历集合中的元素  Model是控制器传递过来的泛型集合
+            foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProID</td>
+                    <td>
+                        <a href="/Product/Detail/@product.ProID">@product.ProName</a>
+                    </td>
+                    <td>@product.ProLevel 成新</td>
+                    <td>@product.ProNewPrice</td>
+                    <td>@product.Users.UserName</td>
+                    <td>@product.ProReleaseTime</td>
+
+                    <td>
+                        <a href="/AdminProduct/Delete/@product.ProID" onclick="return confirm('确认下架吗？')">下架</a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

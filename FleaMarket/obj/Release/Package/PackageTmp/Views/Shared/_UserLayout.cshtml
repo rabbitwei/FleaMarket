@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script src="~/Content/lib/js/jquery.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/index.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <nav class="top">
+            <a href="~/Home/Index">
+                <span class="glyphicon glyphicon-home redColor"></span>
+                跳蚤市场首页
+            </a>
+            <a href="#nowhere">消息</a>
+
+            <span>
+                Hi, &nbsp;<b style=" color: red">@Session["LoginUser"]</b>欢迎来跳蚤市场
+            </span>
+
+            <a href="/Users/Logout">注销</a>
+
+            <span class="pull-right">
+                <a href="/Order/Index">我的订单</a>
+            </span>
+        </nav>
+        <div class="item-list">
+            @RenderBody()
+        </div>
+        <div class="font">
+            <a href="#">©2018-2019 二手交易</a>
+            <a href="#">意见反馈&nbsp;&nbsp;&nbsp;联系我们&nbsp;&nbsp;&nbsp;隐私权声明&nbsp;&nbsp;&nbsp;使用条款</a>
+        </div>
+    </div>
+</body>
+</html>

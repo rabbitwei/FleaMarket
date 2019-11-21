@@ -1,0 +1,134 @@
+﻿* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    background-color: gray;
+}
+
+.login {
+    height: 260px;
+    width: 400px;
+    /*margin: 130px auto;*/
+    padding: 13px;
+    /*登录框居中*/
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -200px;
+    margin-top: -200px;
+    background-color: rgba(240, 255, 255, 0.5);
+    border-radius: 10px;
+    text-align: center; /*文本都居中*/
+}
+
+    .login h1 {
+        color: #0084ff;
+        font-family: "Helvetica";
+    }
+
+form p > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.label_input {
+    font-size: 14px;
+    font-family: "宋体";
+    width: 65px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    color: white;
+    background-color: #3CD8FF;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.text_field {
+    width: 278px;
+    height: 28px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-top: 3px;
+    border: 1px solid skyblue;
+}
+
+.login_expires {
+    font-size: 16px;
+    font-family: "宋体";
+    width: 126px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+}
+
+#btnLogin {
+    font-size: 14px;
+    font-family: "宋体";
+    height: 28px;
+    width: 120px;
+    line-height: 28px;
+    text-align: center;
+    color: white;
+    background-color: #3BD9FF;
+    border-radius: 6px;
+    border: 0;
+    float: left;
+}
+
+#forget_pwd {
+    font-size: 12px;
+    text-decoration: none; /*没有下划线*/
+    position: absolute;
+    right: 46px;
+    top: 34%;
+}
+
+    #forget_pwd a {
+        text-decoration: none;
+        color: skyblue;
+    }
+
+    #forget_pwd:hover {
+        color: blue;
+        text-decoration: underline;
+    }
+#vcodeing{
+    cursor:pointer;
+    position:absolute;
+    right:46px;
+    top:45%;
+}
+
+.label_logup {
+    font-size: 14px;
+    font-family: "宋体";
+    width: 120px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    background-color: #3BD9FF;
+    float: right;
+    border-radius: 5px;
+}
+
+    .label_logup a {
+        text-decoration: none;
+        color: white;
+        display: block;
+    }
+
+.show_message {
+    font-size: 18px;
+    font-family: "黑体";
+    display: block;
+    color: red;
+    width: 200px;
+    vertical-align: middle; /*文字中间显示*/
+    position: absolute;
+    bottom: 30px;
+    left: 26%;
+}

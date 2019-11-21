@@ -1,0 +1,43 @@
+﻿@* 分部视图 *@
+@*@using Webdiyer.WebControls.Mvc*@
+@using System.Web.Mvc
+
+@*@using Webdiyer.WebControls.Mvc;*@
+@model IPagedList<FleaMarket.Models.Product>
+
+
+@{
+    if (Model != null && Model.Any())
+    {
+        foreach (var p in Model)
+        {
+            <div class="item">
+                <a href="/Product/Detail/@p.ProID">
+                    <div class="item-img" style="background-image: url('/Content/productImg/@p.ProImgUrl')">
+                    </div>
+                    <div class="item-info">
+                        <p class="item-title">@p.ProName</p>
+                        <div class="price-line">
+                            <div class="price">
+                                <p class="price-unit">￥</p>
+                                <p class="price-value">@Math.Round(p.ProNewPrice.Value, 2)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-line">
+                        <div class="user-info">
+                            <img src="~/Content/userImg/images/user.jpg" class="usericon" />
+                            <p class="user-name">@ViewData["userName"]</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <div style="width:500px;border:1px solid lightgray;margin:100px auto;padding:80px; font-size:20px">
+            暂时没有相关数据
+        </div>
+    }
+}

@@ -1,0 +1,88 @@
+﻿@model FleaMarket.Models.Product
+
+@using FleaMarket.Models
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Release</title>
+    <link href="~/Content/css/register.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("Release", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <body>
+        <form id="form1">
+            <table>
+                <tr class="firstline">
+                    <td colspan="2">发布产品的步骤：1.填写信息（均为必填项）->2.确认发布->3.发布成功</td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProName)</td>
+                    <td class="tdmiddle">
+                        @Html.TextBoxFor(u => u.ProName)
+                        @Html.ValidationMessageFor(u => u.ProName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProLevel)</td>
+                    <td class="tdmiddle">                       
+                        @Html.DropDownListFor(u => u.ProLevel, ViewData["selectOption"] as List<SelectListItem>)
+                        @Html.ValidationMessageFor(u => u.ProLevel)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProOldPrice)</td>
+                    <td class="tdmiddle">
+                        @Html.TextBoxFor(u => u.ProOldPrice)
+                        @Html.ValidationMessageFor(u => u.ProOldPrice)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProNewPrice)</td>
+                    <td class="tdmiddle">
+                        @Html.TextBoxFor(u => u.ProNewPrice)
+                        @Html.ValidationMessageFor(u => u.ProNewPrice)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProCateg)</td>
+                    <td class="tdmiddle">
+                        @Html.DropDownListFor(u => u.ProCateg, (SelectList)ViewData["Category"])
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProIntro)</td>
+                    <td class="tdmiddle">
+                        @Html.TextAreaFor(u => u.ProIntro)
+                        @Html.ValidationMessageFor(u => u.ProIntro)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdleft">@Html.DisplayNameFor(u => u.ProImgUrl)</td>
+                    <td class="tdmiddle">
+                        @Html.TextBoxFor(u => u.ProImgUrl, new { type = "file"})
+                        @Html.ValidationMessageFor(u => u.ProImgUrl)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="lastline" colspan="2">
+                        <input type="submit" value="提交" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+}
+</html>
+
+

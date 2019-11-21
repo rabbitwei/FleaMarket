@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head th:fragment="head(title,jsPaths)">
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link href="~/Content/Admin/css/Site.css" rel="stylesheet" />
+    <script src="~/Content/Admin/js/jquery.min.js"></script>
+</head>
+<body>
+    <div class="page" style="height: 100%;">
+        <table style="height: 100%; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="2" style="height: 15px;"></td>
+            </tr>
+            <tr>
+                <td id="top" colspan="2" style="height: 77px;">
+                    <table style="height: 100%; width: 100%; border: 0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            @*<td style="width: 120px; text-align: center">
+                                <img width="61" height="61" src="/upload/gdcp/Logo.png" alt="logo" />
+                            </td>
+                            <td>
+                                <img width="207" height="40" src="/upload/gdcp/systemname.png" alt="sname" />
+                            </td>*@
+                            <td style="vertical-align: top; text-align: right">
+                                <div style="margin: 10px 20px 0 0;">
+                                    <div>
+                                        &nbsp;
+                                    </div>
+                                    <div style="margin: 10px 0 0;">
+                                        <span style="padding: 0 0 0 10px;">
+                                            <a href="/Admin/Logout">退出 </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td id="mtd" style="width: 180px; vertical-align: top; background-color: #f1f1f1">
+                    <ul class="menu">
+                        <li class="L1">系统管理</li>
+                        <li class="L2"><a href="/Admin/Index">后台用户管理</a></li>
+                        <li class="L2"><a href="/AdminUser/Index">普通用户管理</a></li>
+                        <li class="L1">业务管理</li>
+                        <li class="L2"><a href="/AdminProduct/Index">产品管理</a></li>
+                        <li class="L2"><a href="/AdminTrade/Index">交易管理</a></li>
+                    </ul>
+                </td>
+                <td style="vertical-align: top; background-color: #f1f1f1; margin: 0px; overflow: auto; width: 840px;">
+                    <div id="main">
+                        @RenderBody()
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"
+                    style="height: 20px; background-color: #f1f1f1; border-top: 1px solid #D8D8D8; text-align: center">
+                    <div id="footer">
+                        Copyright@2018 All rights reserved.
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

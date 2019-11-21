@@ -1,0 +1,235 @@
+﻿@model FleaMarket.Models.Users
+
+@{
+    ViewBag.Title = "我的";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>我的书架</title>
+    <link href="~/Content/css/reset.css" rel="stylesheet" />
+    <link href="~/Content/css/myBookshelf.css" rel="stylesheet" />
+    <link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+
+    <style>
+        .no-item-list {
+            list-style: none;
+            margin: 0 auto;
+        }
+
+        .no-item {
+            width: 500px;
+            height: 200px;
+            border: 1px solid gray;
+            padding: 80px;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!--用户的个人信息-->
+    <div class="person-info">
+        <p>
+            <a href="#" class="name">@Model.UserName</a>
+        </p>
+        <p>
+
+
+            @if (@Model.UserGender.Equals("男"))
+            {
+            <a href="#" class="sex">男</a><img src="~/Content/userImg/boy.png" class="sex-pic" />
+            }
+            else
+            {
+            <a href="#" class="sex">女</a><img src="~/Content/userImg/girl.png" class="sex-pic">
+            }
+        </p>
+        <p class="set">
+            <a href="/Users/Edit" class="edit">
+                编辑个人主页
+            </a>
+            <img class="set-icon" src="~/Content/userImg/setting.png">
+
+        </p>
+        <div class="contact">
+            <p>
+                <span class="call-icon"></span>
+                联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：
+                <a href="#" class="num">@Model.UserPhone</a>
+            </p>
+            <p>
+                <span class="address-icon"></span>
+                住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：<a href="#" class="address">@Model.UserAddress</a>
+            </p>
+            <p>
+                <span class="major-icon"></span>
+                个人简介：<a href="#" class="major">@Model.UserIntro</a>
+            </p>
+        </div>
+    </div><!-- person-info-end -->
+    <!-- 书摊和求书选项卡 -->
+    <div class="card-btn">
+        <span title="release-product" id="release-btn" class="active">我发布的</span>
+        <span title="buy-product" id="buy-btn">我买到的</span>
+        <span title="sell-product" id="sell-btn">我卖出的</span>
+        <span title="favorite-product" id="favorite-btn">我收藏的</span>
+    </div>
+
+    <!--用户产品的显示版块-->
+    <div id="container">
+        <!-- 我发布的 -->
+        <div id="release-product">
+            <ul class="book-ul" id="releaseProductItems"></ul>
+        </div>
+
+        <!-- 我买到的 -->
+        <div id="buy-product">
+            <ul class="book-ul" id="buyProductItems"></ul>
+        </div>
+        <!--我卖出的-->
+        <div id="sell-product">
+            <ul class="book-ul" id="sellProductItems"></ul>
+        </div>
+        <!--我收藏的-->
+        <div id="favorite-product">
+            <ul class="book-ul" id="favoriteProductItems"></ul>
+        </div>
+    </div><!-- javascript- -->
+
+
+
+    <script src="~/Content/js/jquery-3.2.js"></script>
+    <script src="~/Content/js/myBookshelf.js"></script>
+    <script src="~/Content/js/jquery.tmpl.js"></script>
+
+    <!--我发布的模版-->
+    <script id="releaseProductItem" type="type/x-jquery-tmpl">
+        <li class="book-list">
+            <p class="book-pic">
+                <img src="/Content/productImg/${ProImgUrl}">
+            </p>
+            <h5 class="book-name">${ProName}</h5>
+            <div class="book-detail">
+                <p>原&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="original-price">${ProOldPrice}</span></p>
+                <p>现&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="book-price">${ProOldPrice}</span></p>
+                <p>品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相：<span class="book-condition">${ProLevel}成新</span></p>
+                <div>商品描述：<span id="intro" class="book-desc">${ProIntro}</span></div>
+            </div>
+        </li>
+    </script>
+
+    <!--我买到的模版-->
+    <script id="buyProductItem" type="type/x-jquery-tmpl">
+        <li class="book-list">
+            <p class="book-pic">
+                <img src="/Content/productImg/${ProImgUrl}">
+            </p>
+            <h5 class="book-name">${ProName}</h5>
+            <div class="book-detail">
+                <p>卖家：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProWhoUser}</span></p>
+                <p>交易价：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProNewPrice}</span></p>
+                <p>评价：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${Pro}</span></p>
+            </div>
+        </li>
+    </script>
+
+    <!--我卖出的模版-->
+    <script id="sellProductItem" type="type/x-jquery-tmpl">
+        <li class="book-list">
+            <p class="book-pic">
+                <img src="/Content/productImg/${ProImgUrl}">
+            </p>
+            <h5 class="book-name">${ProName}</h5>
+            <div class="book-detail">
+                <p>卖家&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProSellUser}</span></p>
+                <p>交易价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProNewPrice}</span></p>
+                <p>卖家评价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${TraComment}</span></p>
+            </div>
+        </li>
+    </script>
+
+    <!--我的收藏模版 -->
+    <script id="favoriteProductItem" type="type/x-jquery-tmpl">
+        <li class="book-list">
+            <p class="book-pic">
+                <img src="/Content/productImg/${ProImgUrl}">
+            </p>
+            <h5 class="book-name">${ProName}</h5>
+            <div class="book-detail">
+                <p>卖家&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProWhoUser}</span></p>
+                <p>原价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProOldPrice}</span></p>
+                <p>现价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProNewPrice}</span></p>
+                <p>品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相：<span class="book-condition">${ProLevel}</span></p>
+                <div>商品描述：<span id="intro" class="book-desc">${ProIntro}</span></div>
+            </div>
+        </li>
+    </script>
+
+    <!--没有数据的时候的模版-->
+    <script id="noProductItem" type="text/x-jquery-tmpl">
+        <li class="no-item-list">
+            <div class="no-item">
+                您还没有${opt}过任何产品
+            </div>
+        </li>
+    </script>
+
+
+    <script>
+        //使用jquery的ajax来获取用户发布的产品，收藏的产品和购买的产品
+        var url = "/Users/MyRealseProduct";
+        $(function () {
+            //页面加载成功后先获取发布的产品数据
+            $.post(url, null, function (releaseProduct) {
+                var operate = { "opt": "发布" }
+                if (releaseProduct != null)
+                    $("#releaseProductItem").tmpl(releaseProduct).appendTo("#releaseProductItems");
+                else
+                    $("#noProductItem").tmpl(operate).appendTo("#releaseProductItems");
+            });
+        });
+
+        //获取用户买的数据
+        $("#buy-btn").one("click", function () {
+            var operate = { "opt": "买" }
+            var buyUrl = "/Users/MyBuyProduct";
+            $.post(buyUrl, null, function (buyProduct) {
+                if (buyProduct.length != 0)
+                    $("#buyProductItem").tmpl(buyProduct).appendTo("#buyProductItems");
+                else
+                    $("#noProductItem").tmpl(operate).appendTo("#buyProductItems");
+            });
+        });
+        //获取用户出售的数据
+        $("#sell-btn").one("click", function () {
+            var operate = { "opt": "出售" }
+            var sellUrl = "/Users/MySellProduct";
+            $.post(sellUrl, null, function (sellProduct) {
+                if (sellProduct.length != 0)
+                    $("#sellProductItem").tmpl(sellProduct).appendTo("#sellProductItems");
+                else
+                    $("#noProductItem").tmpl(operate).appendTo("#sellProductItems");
+            });
+        })
+        //获取用户收藏的数据
+        $("#favorite-btn").one("click", function () {
+            var operate = { "opt": "收藏" }
+            var favUrl = "/Users/MyFavoriteProduct";
+            $.post(favUrl, null, function (favProduct) {
+                if (favProduct.length != 0)
+                    $("#favoriteProductItem").tmpl(favProduct).appendTo("#favoriteProductItems");
+                else
+                    $("#noProductItem").tmpl(operate).appendTo("#favoriteProductItems");
+            });
+        })
+
+    </script>
+
+</body>
+</html>

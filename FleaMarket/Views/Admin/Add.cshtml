@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml.cshtml";
+}
+
+<script>
+    function validata() 
+    {
+        var password = document.getElementById("password");
+        var confirm = document.getElementById("confirm");
+        if (password.value == confirm.value) {
+            return true
+        };
+        alert("两次密码不一致");
+        password.value = null;
+        confirm.value = null;
+        return false;
+    }
+</script>
+
+<form action="/Admin/Add" onsubmit="return validata()" method="post">
+    <div class="titlebar">
+        <div>@ViewBag.TitleBar</div>
+    </div>
+    <div class="list">
+        <table class="listtb">
+            <tr>
+                <td>用户名</td>
+                <td> <input type="text" required name="adminname" /> </td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td> <input id="password" type="password" required name="adminpwd" /> </td>
+            </tr>
+            <tr>
+                <td>确认密码</td>
+                <td> <input id="confirm" type="password" required name="confirm" /> 
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center"><input type="submit" value="添加" /> </td>
+            </tr>
+        </table>
+    </div>
+</form>
