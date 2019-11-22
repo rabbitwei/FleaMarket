@@ -13,6 +13,12 @@ namespace FleaMarket.Controllers.API
 
     public class UsersController : Controller
     {
+        #region 这个业务方法没有使用
+        /// <summary>
+        /// 没有使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public JsonResult getUser(String id)
         {
             int uid = 0;
@@ -29,5 +35,6 @@ namespace FleaMarket.Controllers.API
                 return Json(UserObjectToJson.Convert(user), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
     }
 }

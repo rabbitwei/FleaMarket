@@ -10,10 +10,10 @@ using FleaMarket.Util;
 namespace FleaMarket.Controllers.API
 {
     //RESTful风格的api，参数 id 由 App_Start/RouteConfig.cs 文件来完成映射了
-
     public class ProductController : Controller
     {
 
+        #region  返回产品信息
         /// <summary>
         /// 返回产品信息
         /// </summary>
@@ -27,7 +27,7 @@ namespace FleaMarket.Controllers.API
             int pid = 0;
             if (!int.TryParse(id, out pid))
             {
-                var ret = new { error = 400, errMessage = "参数错误" };
+                var ret = new { code = 400, message = "参数错误" };
                 return Json(ret, JsonRequestBehavior.AllowGet);
             }
 
@@ -41,7 +41,7 @@ namespace FleaMarket.Controllers.API
                     user = dc.Users.FirstOrDefault(u => u.UserID == product.ProWhoUser);
                 else
                 {
-                    var ret = new { error = 400, errMessage = "没有该产品" };
+                    var ret = new { code = 400, message = "没有该产品" };
                     return Json(ret, JsonRequestBehavior.AllowGet);
                 }
 
@@ -57,5 +57,6 @@ namespace FleaMarket.Controllers.API
                 return Json(jsonProduct, JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
     }
 }

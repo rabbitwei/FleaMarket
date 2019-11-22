@@ -16,6 +16,139 @@ namespace FleaMarket.Controllers
 {
     public class UsersController : Controller
     {
+
+
+        #region 用户下架产品
+        /// <summary>
+        /// 用户下架产品
+        /// </summary>
+        /// <param name="pid">产品id</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult CancelRelease(string pid)
+        {
+            if (!IsLogined())
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+            int proId = 0;
+            if (!int.TryParse(pid, out proId))
+                return Content("<script>alert('查询查询错误');window.location.href='/Users/Me'</script>");
+
+            //获取用户id
+            int userId;
+            if (!int.TryParse(Session["UserId"].ToString(), out userId))
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+            using (ShoppingEntities dc = new ShoppingEntities())
+            {
+                //查找product表，通过产品的id和产品的发布用户的id来查找
+                var product = dc.Product.FirstOrDefault(p => p.ProID == proId && p.ProWhoUser == userId);
+                if (null != product)
+                {
+                    //删除产品
+                    dc.Product.Remove(product);
+                    if (dc.SaveChanges() > 0)
+                        return Content("<script>alert('下架成功');window.location.href='/Users/Me'</script>");
+                    else
+                        return Content("<script>alert('下架成功');window.location.href='/Users/Me'</script>");
+                }
+                else
+                    return Content("<script>alert('该产品不是您的');window.location.href='/Users/Me'</script>");
+            }
+        }
+        #endregion
+
+        #region 用户取消收藏
+        /// <summary>
+        /// 用户取消收藏
+        /// </summary>
+        /// <param name="pid">产品id</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult CancelFavorite(string pid)
+        {
+            if (!IsLogined())
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+            int proId = 0;
+            if (!int.TryParse(pid, out proId))
+                return Content("<script>alert('查询查询错误');window.location.href='/Users/Me'</script>");
+
+            //获取用户id
+            int userId;
+            if (!int.TryParse(Session["UserId"].ToString(), out userId))
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+            using (ShoppingEntities dc = new ShoppingEntities())
+            {
+                //查找Favorite表是否有该产品的收藏，通过登录用户的id和产品id
+                var favoriteEntiry = dc.Favorite.FirstOrDefault(
+                    fav => fav.FavPID == proId && fav.FavUID == userId);
+
+                //判断是否有该收藏
+                if (null != favoriteEntiry)
+                {
+                    //删除产品
+                    dc.Favorite.Remove(favoriteEntiry);
+                    if (dc.SaveChanges() > 0)
+                        return Content("<script>alert('取消收藏成功');window.location.href='/Users/Me'</script>");
+                    else
+                        return Content("<script>alert('取消收藏失败');window.location.href='/Users/Me'</script>");
+                }
+                else
+                    return Content("<script>alert('您没有该产品的收藏');window.location.href='/Users/Me'</script>");
+            }
+        }
+        #endregion
+
+        #region 用户添加收藏
+        /// <summary>
+        /// 用户添加收藏，需要登录
+        /// </summary>
+        /// <param name="pid">产品id</param>
+        /// <returns></returns>
+        /// AddFavorite
+        public ActionResult AddFavorite(string pid)
+        {
+            if (!IsLogined())
+                return Content("<script>alert('请登录才可以收藏');window.location.href='/Users/Login'</script>");
+
+            int proId = 0;
+            if (!int.TryParse(pid, out proId))
+                return Content("<script>alert('查询查询错误');window.location.href='/Users/Me'</script>");
+
+            //获取用户id
+            int userId;
+            if (!int.TryParse(Session["UserId"].ToString(), out userId))
+                return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+            //添加收藏
+            using (ShoppingEntities dc = new ShoppingEntities())
+            {
+                var favoriteEntity = new Favorite();
+                favoriteEntity.FavUID = userId;
+                favoriteEntity.FavPID = proId;
+                //收藏前先判断是否有重复收藏
+                var favRet = dc.Favorite.FirstOrDefault(fav => fav.FavPID == proId && fav.FavUID == userId);
+                if (favRet != null)
+                    return Content("<script>alert('不可以重复收藏');window.location.href='/Product/Detail/" + pid + "'</script>");
+                else
+                {
+                    dc.Favorite.Add(favoriteEntity);
+                    if (dc.SaveChanges() > 0)
+                        return Content("<script>alert('收藏成功');window.location.href='/Product/Detail/" + pid + "'</script>");
+                    else
+                        return Content("<script>alert('收藏失败');window.location.href='/Product/Detail" + pid + "'</script>");
+                }
+
+
+
+            }
+        }
+        #endregion
+
+
+
         #region 返回用户发布的产品数据（返回Json）
 
         /// <summary>
@@ -23,7 +156,7 @@ namespace FleaMarket.Controllers
         /// </summary>
         /// <returns>json集合</returns>
         [HttpPost]
-        public ActionResult MyRealseProduct()
+        public ActionResult MyReleaseProduct()
         {
             //1. 先判断用户是否登录了
 
@@ -61,12 +194,13 @@ namespace FleaMarket.Controllers
                 //var dataList = dc.Product.Where(p => p.ProWhoUser == userid && p.ProIsSell == false).Select((p =>
                 //    new { p.ProID, p.ProName, p.ProLevel, p.ProOldPrice, p.ProNewPrice, p.ProIntro, p.ProImgUrl, p.ProReleaseTime }
                 //    )).ToList();
-
-                return Json(proList, JsonRequestBehavior.DenyGet);
+                Dictionary<String, Object> retJson = new Dictionary<String, Object>();
+                retJson.Add("total", proList.Count());
+                retJson.Add("products", proList);
+                return Json(retJson, JsonRequestBehavior.DenyGet);
             }
         }
         #endregion
-
 
         #region 返回用户收藏的产品（返回Json）
         /// <summary>
@@ -98,10 +232,14 @@ namespace FleaMarket.Controllers
                 //用于返回给前端的集合
                 List<Dictionary<String, Object>> favList = new List<Dictionary<String, Object>>();
                 //查询用户收藏的集合
-                List<Favorite> retList = dc.Favorite.Where(fav => fav.FavUID == userid).ToList();
+                var retList = dc.Favorite.Where(fav => fav.FavUID == userid).ToList();
                 foreach (var ret in retList)
                     favList.Add(ProductObjectToJson.Convert(ret.Product, null));
-                return Json(favList, JsonRequestBehavior.DenyGet);
+
+                Dictionary<String, Object> retJson = new Dictionary<String, Object>();
+                retJson.Add("total", favList.Count());
+                retJson.Add("products", favList);
+                return Json(retJson, JsonRequestBehavior.DenyGet);
             }
         }
         #endregion
@@ -136,7 +274,11 @@ namespace FleaMarket.Controllers
                 var tradeList = dc.TradeRecord.Where(tra => tra.UserBuyID == userid).ToList();
                 foreach (var trade in tradeList)
                     buyList.Add(ProductObjectToJson.Convert(trade.Product, trade));
-                return Json(buyList, JsonRequestBehavior.DenyGet);
+
+                Dictionary<String, Object> retJson = new Dictionary<String, Object>();
+                retJson.Add("total", buyList.Count());
+                retJson.Add("products", buyList);
+                return Json(retJson, JsonRequestBehavior.DenyGet);
             }
         }
         #endregion
@@ -146,7 +288,7 @@ namespace FleaMarket.Controllers
         /// 返回该用户卖出的产品，通过订单表中的卖家id来判断，还添加了评价
         /// </summary>
         /// <returns></returns>
-        //[HttpPost]
+        [HttpPost]
         public ActionResult MySellProduct()
         {
             //1. 先判断用户是否登录了
@@ -173,7 +315,10 @@ namespace FleaMarket.Controllers
                 foreach (var trade in tradeList)
                     sellList.Add(ProductObjectToJson.Convert(trade.Product, trade));
 
-                return Json(sellList, JsonRequestBehavior.AllowGet);
+                Dictionary<String, Object> retJson = new Dictionary<String, Object>();
+                retJson.Add("total", sellList.Count());
+                retJson.Add("products", sellList);
+                return Json(retJson, JsonRequestBehavior.DenyGet);
             }
         }
         #endregion
@@ -422,7 +567,8 @@ namespace FleaMarket.Controllers
 
         #region 返回注册页面
         [HttpGet]
-        public ActionResult Register() {
+        public ActionResult Register()
+        {
             return View();
         }
         #endregion
@@ -450,7 +596,7 @@ namespace FleaMarket.Controllers
                         }
                     }
 
-               
+
 
                     dc.Users.Add(entity);
 

@@ -1,0 +1,139 @@
+﻿<!-- 使用参数有乱码，设置一下编码格式 -->
+<meta charset="utf-8" />
+<script src="~/Content/js/vue.min.js"></script>
+<script src="~/Content/js/axios.min.js"></script>
+<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+<style>
+    div.product {
+        float: left;
+        border: 1px solid gray;
+        width: 300px;
+        margin: 20px;
+        /* 指定移动到该样式的时候鼠标的样子 */
+        cursor: pointer;
+    }
+
+        div.product:hover {
+            border: 1px solid #c40000;
+        }
+
+    div.price {
+        font-size: 20px;
+        color: red;
+        height: 40px;
+        width: 100%;
+        text-align: center;
+    }
+
+    div.name {
+        font-size: 16px;
+        color: gray;
+        height: 50px;
+        text-align: center;
+    }
+
+    div.sale,
+    div.review {
+        text-align: center;
+        border-top: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        float: left;
+        font-size: 14px;
+        color: gray;
+        width: 149px;
+    }
+
+    div.review {
+        border-right: none;
+    }
+</style>
+
+<!--Vue.js的组件-->
+<div id="template" style="display: none">
+    <div>
+        <div>
+            <img v-bind:src="['/Content/productImg/' + product.ProImgUrl]" style="width:30px; height:40px" />
+        </div>
+        <div>
+            {{product.ProID}}
+        </div>
+        <div>
+            ￥{{product.ProNewPrice}}
+        </div>
+        <div>
+            {{product.ProName}}
+        </div>
+    </div>
+</div>
+
+
+<div id="div">
+    <div class="list-item" style="height: 200px;">
+        <product v-for="item in subArr" v-bind:product="item"></product>
+    </div>
+
+    <!--分页控件-->
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li v-for="i in pagearr" track-by="$index" class="pageNo==(i-1)?'active':''">
+                    <a href="#" v-on:click="pageNo=i">{{ i + 1 }}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    /*
+    另外由于 template 部分因为比较复杂，就不好写在一个 单引号 ' ' 里维护起来，
+    所以就直接写在html里，然后通过html dom 获取出来，这样编写起来略微容易一点。
+    */
+    var templateHtml = $("#template").html();
+
+    Vue.component('product', {
+        props: ['product'],
+        template: templateHtml
+    })
+
+    //核心：使用Vue的计算属性
+    new Vue({
+        el: "#div",
+        data: {
+            products: [],
+            total: 27,
+            count: 3,
+            pageNo: 0,
+            pagearr: []
+
+        },
+        mounted: function () {  //表示这个 Vue 对象加载成功了
+            var self = this;
+            var url = "/Users/MyRealseProduct"
+            axios.post(url).then(function (response) {
+                self.products = response.data["products"];
+                console.log(self.products);
+
+                var ret = self.total % self.count;
+                var page = 0;
+                if (ret != 0)
+                    page = self.total / self.count + 1;
+                else
+                    page = self.total / self.count;
+
+                console.log(page);
+                for (var i = 0; i < page; ++i)
+                    self.pagearr[i] = i;
+            })
+        },
+        computed: {
+            subArr: function () {
+                var temp = this.products.slice(this.pageNo * this.count, (this.pageNo + 1) * this.count);
+                console.log(temp);
+                return temp;
+            }
+        }
+    })
+</script>

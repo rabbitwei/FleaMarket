@@ -52,9 +52,9 @@
       <PropertyRef Name="TraID" />
     </Key>
     <Property Name="TraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TraPID" Type="int" />
-    <Property Name="UserBuyID" Type="int" />
-    <Property Name="UserSellID" Type="int" />
+    <Property Name="TraPID" Type="int" Nullable="false" />
+    <Property Name="UserBuyID" Type="int" Nullable="false" />
+    <Property Name="UserSellID" Type="int" Nullable="false" />
     <Property Name="TraComment" Type="nvarchar" MaxLength="150" />
     <Property Name="TraBuyTime" Type="smalldatetime" />
   </EntityType>
@@ -124,7 +124,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Tra_BuyUser">
-    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
@@ -136,7 +136,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Tra_Pro">
-    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
     <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Product">
@@ -148,7 +148,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Tra_SellUser">
-    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">

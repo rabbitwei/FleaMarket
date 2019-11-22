@@ -225,6 +225,23 @@
     border-radius: 3px;
 }
 
+
+/*用户产品版块*/
+.item-list {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    min-height: 750px;
+}
+
+    .item-list .item {
+        float: left;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        margin-left: 6px;
+        margin-bottom: 10px;
+    }
+
 .book-ul {
     width: 100%;
     height: auto;
@@ -312,10 +329,9 @@
     cursor: pointer;
 }
 
-.delete-btn {
-    width: 28px;
-    height: 28px;
-    background-image: url(../userImg/delete2.jpg);
+.delete-btn, .fav-btn {
+    width: 62px;
+    height: 30px;
     background-size: cover;
     background-position: center;
     position: absolute;
@@ -323,7 +339,14 @@
     top: 4px;
     cursor: pointer;
     z-index: 9999 !important;
+    text-align: center;
 }
+.fav-btn {
+    width: 80px;
+    height: 40px;
+}
+
+
 
 .book-id {
     display: none;

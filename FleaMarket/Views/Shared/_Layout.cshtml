@@ -31,7 +31,6 @@
                 {
                     if (Request.Cookies["isremember"] != null)
                     {
-                        userName = Request.Cookies["isremember"].Value;
                         Session["LoginUser"] = userName;
                     }
                     else

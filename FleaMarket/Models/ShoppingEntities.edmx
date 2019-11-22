@@ -57,9 +57,9 @@
             <PropertyRef Name="TraID" />
           </Key>
           <Property Name="TraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TraPID" Type="int" />
-          <Property Name="UserBuyID" Type="int" />
-          <Property Name="UserSellID" Type="int" />
+          <Property Name="TraPID" Type="int" Nullable="false" />
+          <Property Name="UserBuyID" Type="int" Nullable="false" />
+          <Property Name="UserSellID" Type="int" Nullable="false" />
           <Property Name="TraComment" Type="nvarchar" MaxLength="150" />
           <Property Name="TraBuyTime" Type="smalldatetime" />
         </EntityType>
@@ -129,7 +129,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_BuyUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -141,7 +141,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_Pro">
-          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -153,7 +153,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_SellUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -300,9 +300,9 @@
             <PropertyRef Name="TraID" />
           </Key>
           <Property Name="TraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TraPID" Type="Int32" />
-          <Property Name="UserBuyID" Type="Int32" />
-          <Property Name="UserSellID" Type="Int32" />
+          <Property Name="TraPID" Type="Int32" Nullable="false" />
+          <Property Name="UserBuyID" Type="Int32" Nullable="false" />
+          <Property Name="UserSellID" Type="Int32" Nullable="false" />
           <Property Name="TraComment" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="TraBuyTime" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Product" Relationship="Self.FK_Tra_Pro" FromRole="TradeRecord" ToRole="Product" />
@@ -392,7 +392,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_Pro">
-          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -416,7 +416,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_BuyUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -428,7 +428,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tra_SellUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TradeRecord" Type="Self.TradeRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -439,7 +439,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ShoppingEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ShoppingEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administrators" EntityType="Self.Administrators" />
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Favorite" EntityType="Self.Favorite" />
@@ -489,7 +489,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ShoppingModelStoreContainer" CdmEntityContainer="ShoppingEntities3">
+        <EntityContainerMapping StorageEntityContainer="ShoppingModelStoreContainer" CdmEntityContainer="ShoppingEntities1">
           <EntitySetMapping Name="Administrators">
             <EntityTypeMapping TypeName="ShoppingModel.Administrators">
               <MappingFragment StoreEntitySet="Administrators">

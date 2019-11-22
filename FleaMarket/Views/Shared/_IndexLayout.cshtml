@@ -35,7 +35,6 @@
                 {
                     if (Request.Cookies["isremember"] != null)
                     {
-                        userName = Request.Cookies["isremember"].Value;
                         Session["LoginUser"] = userName;
                     }
                     else
@@ -99,7 +98,7 @@
 
         <div class="slodbar-wrap">
             <div class="salebar">
-                <a href="">
+                <a href="/Users/Me">
                     <div class=saleitem>
                         <img src="~/Content/systemImg/asset.png" alt="" class="icon" />
                         <div class="desc">

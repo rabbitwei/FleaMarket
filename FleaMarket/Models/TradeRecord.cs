@@ -15,9 +15,9 @@ namespace FleaMarket.Models
     public partial class TradeRecord
     {
         public int TraID { get; set; }
-        public Nullable<int> TraPID { get; set; }
-        public Nullable<int> UserBuyID { get; set; }
-        public Nullable<int> UserSellID { get; set; }
+        public int TraPID { get; set; }
+        public int UserBuyID { get; set; }
+        public int UserSellID { get; set; }
         public string TraComment { get; set; }
         public Nullable<System.DateTime> TraBuyTime { get; set; }
     

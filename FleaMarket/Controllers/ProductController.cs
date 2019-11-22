@@ -43,9 +43,15 @@ namespace FleaMarket.Controllers
         }
         #endregion
 
-        //订单提交
+        #region 订单提交的操作
+        /// <summary>
+        /// 订单提交的操作
+        /// </summary>
+        /// <param name="proId"></param>
+        /// <param name="sellerId"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Detail(string proId)
+        public ActionResult Detail(string proId, string sellerId)
         {  
             //1. 登录判断
             if (!IsLogined())
@@ -58,20 +64,54 @@ namespace FleaMarket.Controllers
             if (!int.TryParse(proId, out pid))
                 return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
 
+            //该产品的发布者
+            int sellId = 0;
+            if (!int.TryParse(sellerId, out sellId))
+                return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+
+
             using (ShoppingEntities se = new ShoppingEntities())
             {
-                //查询
-                var entity = se.Product.FirstOrDefault(p => p.ProID == pid);
-                if (entity == null)
+                //查询是否有指定的产品
+                var proEntity = se.Product.FirstOrDefault(p => p.ProID == pid);
+                if (proEntity == null)
                     return Content("<script>alert('没有该产品！');window.location.href='/Product/Detail'</script>");
 
-                //修改product表中的字段，只是让该 product 下架而已
-                //当用户点击确认收货才表示购买成功
-                var entry = se.Entry(entity);
+                //查询该产品是否是指定的发布用户
+                var userEntity = se.Product.FirstOrDefault(p => p.ProWhoUser == sellId);
+                if (userEntity == null)
+                    return Content("<script>alert('卖家没有发布过这个产品！');window.location.href='/Product/Detail'</script>");
+                
+
+
+                //修改product表中的字段，让该 product 下架
+                var entry = se.Entry(proEntity);
                 entry.State = System.Data.EntityState.Unchanged;
                 entry.Property("ProIsSell").IsModified = true;
-                entity.ProIsSell = true;
+                proEntity.ProIsSell = true;
 
+                //创建订单
+                TradeRecord tradeEntity = new TradeRecord();
+
+                //获取当前用户的id
+                int buyUserId = 0;
+                if (!int.TryParse(Session["UserId"].ToString(), out buyUserId))
+                    return Content("<script>alert('请登录');window.location.href='/Users/Login'</script>");
+
+                //买家和卖家不能是同一个人
+                if (sellId == buyUserId)
+                    return Content("<script>alert('不能购买自己发布的商品');window.location.href='/Users/Login'</script>");
+
+
+                //订单需要的字段：产品id， 买家id， 卖家id
+                tradeEntity.UserBuyID = buyUserId;
+                tradeEntity.UserSellID = sellId;
+                tradeEntity.TraPID = pid;
+                //需要指定购买时间（不设置的话有坑）
+                tradeEntity.TraBuyTime = DateTime.Now;
+
+                //添加到数据库
+                se.TradeRecord.Add(tradeEntity);
 
                 if (se.SaveChanges() > 0)
                 {
@@ -83,6 +123,7 @@ namespace FleaMarket.Controllers
                 }
             }
         }
+        #endregion
 
         #region 发布产品的页面
         [HttpGet]

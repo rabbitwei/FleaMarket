@@ -7,6 +7,7 @@
 <link href="~/Content/css/reset.css" rel="stylesheet" />
 <link href="~/Content/css/Detail.css" rel="stylesheet" />
 <script src="~/Content/js/jquery-3.2.js"></script>
+<script src="~/Content/js/vue.min.js"></script>
 
 <div class="content">
     <div id="book-pic">
@@ -29,7 +30,7 @@
             <p>发布时间<a class="upload-time" id="time"></a></p>
         </span>
         <button class="buy-now" data-toggle="modal" data-target="#myModal" id="buyProduct">立即购买</button>
-        <button class="buy-now" id="addFavorite">收藏</button>
+        <a href="javascript:void(0)" class="buy-now" id="addFavorite">收藏</a>
         <form action="/Product/Detail" method="post">
 
             @*点击立即购买判断是否登录*@
@@ -50,8 +51,7 @@
                             </div>
                             <div class="modal-footer">
                                 <input type="hidden" name="proId" value="" id="proId" />
-                                <input type="hidden" name="userId" value="@Session["UserId"]"/>
-                                <input type="hidden" name="sellerId" value="" id="proId"/>
+                                <input type="hidden" name="sellerId" value="" id="sellerId" />
                                 <input type="submit" class="btn btn-primary" value="确认付款" />
                             </div>
                         </div>
@@ -97,11 +97,11 @@
         <span class="book-tip" id="intro"></span>
     </div>
 </div><!--  container -->
-
+<!--jquery的代码： 获取数据，然后渲染-->
 <script>
     //前端需要通过首页传递过来的 url 地址中的最后一个参数来查询 Product
     $(function () {
-     
+
         var proUrl = window.location.href.toString();
         //获取最后一个 "/"的索引
         var index = proUrl.lastIndexOf("/");
@@ -116,7 +116,11 @@
         //服务端的url地址是 RESTful 风格的
         var getDetail = "/api/Product/getDetail/" + pid;
         $.get(getDetail, null, function (ret) {
-            //console.log(ret);
+            //参数错误的话，跳回首页
+            if (ret["code"] == 400) {
+                alert(ret["message"])
+                window.location.href = "/Home/Index";
+            }
             var product = ret["product"];
             var user = ret["user"];
 
@@ -139,7 +143,13 @@
             $("#proName2").text(product["ProName"]);
             $("#newPrice2").text("￥" + product["ProNewPrice"]);
             $("#proId").val(product["ProID"]);
+            $("#sellerId").val(user["UserId"]);
+          
+
+            //给收藏超链接的href赋值
+            var addFavUrl = 
+            $("#addFavorite").attr("href", "/Users/AddFavorite?pid=" + product["ProID"]);
+           
         });
     });
-
 </script>

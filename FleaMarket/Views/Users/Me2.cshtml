@@ -1,0 +1,336 @@
+﻿<!--使用Vue.js做分页操作的视图，但是没有完成，放弃了-->
+
+
+@model FleaMarket.Models.Users
+
+@{
+    ViewBag.Title = "我的";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>我的书架</title>
+    <link href="~/Content/css/reset.css" rel="stylesheet" />
+    <link href="~/Content/css/my.css" rel="stylesheet" />
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/vue.min.js"></script>
+    <script src="~/Content/js/vue-router.min.js"></script>
+    <script src="~/Content/js/axios.min.js"></script>
+    <style>
+        .no-item-list {
+            list-style: none;
+            margin: 0 auto;
+        }
+
+        .no-item {
+            width: 500px;
+            height: 200px;
+            border: 1px solid gray;
+            padding: 80px;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!--用户的个人信息-->
+    <div class="person-info">
+        <p>
+            <a href="#" class="name">@Model.UserName</a>
+        </p>
+        @*<p>
+
+            </p>*@
+        <p>
+
+            <img class="usericon" src="/Content/@Model.UserIcon" />
+
+            @if (@Model.UserGender.Equals("男"))
+            {
+            <a href="#" class="sex">男</a><img src="~/Content/userImg/boy.png" class="sex-pic" />
+            }
+            else
+            {
+            <a href="#" class="sex">女</a><img src="~/Content/userImg/girl.png" class="sex-pic">
+            }
+
+        </p>
+        <p class="set">
+            <a href="/Users/Edit" class="edit">
+                编辑个人主页
+            </a>
+            <img class="set-icon" src="~/Content/userImg/setting.png">
+
+        </p>
+        <div class="contact">
+            <p>
+                <span class="call-icon"></span>
+                联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：
+                <a href="#" class="num">@Model.UserPhone</a>
+            </p>
+            <p>
+                <span class="address-icon"></span>
+                住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：<a href="#" class="address">@Model.UserAddress</a>
+            </p>
+            <p>
+                <span class="major-icon"></span>
+                个人简介：<a href="#" class="major">@Model.UserIntro</a>
+            </p>
+        </div>
+    </div><!-- person-info-end -->
+    <!-- 书摊和求书选项卡 -->
+    @*<div class="card-btn" id="card">
+        <a href="javascript:void(0)" class="active" click="componentName = 'product1'">我发布的</a>
+        <span title="buy-product" id="buy-btn">我买到的</span>
+        <span title="sell-product" id="sell-btn">我卖出的</span>
+        <span title="favorite-product" id="favorite-btn">我收藏的</span>
+        <component is="componentName"></component>
+    </div>*@
+
+    <!--用户产品的显示版块-->
+    <div id="container">
+        <div class="menu">
+            <!--
+                router-link 相当于就是超链
+                to 相当于就是 href
+                -->
+            <router-link to="/Users/MyRealseProduct">我发布的</router-link>
+            <router-link to="/Users/MyFavoriteProduct">我收藏的</router-link>
+            <router-link to="/Users/MyBuyProduct">我购买的</router-link>
+            <router-link to="/Users/MySellProduct">我出售的</router-link>
+        </div>
+        <div class="workingRoom">
+            <!--
+               点击上面的/user,那么/user 对应的内容就会显示在router-view 这里
+            -->
+            <router-view></router-view>
+        </div>
+        @*<div>
+                <div id="release-product">
+                    <product1 v-for="item in subArr" v-bind:product="item"></product1>
+                </div>
+                <!-- 我买到的 -->
+                <div id="buy-product">
+
+                </div>
+                <!--我卖出的-->
+                <div id="sell-product">
+                </div>
+                <!--我收藏的-->
+                <div id="favorite-product">
+                </div>
+            </div>*@
+
+
+        <!--分页-->
+        <div class="list-count">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li v-for="i in pagearr" track-by="$index" class="pageNo==(i-1)?'active':''">
+                        <a href="javascript:void(0)" v-on:click="pageNo=i">{{ i + 1 }}</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+
+    <script src="~/Content/js/jquery-3.2.js"></script>
+    <script src="~/Content/js/myBookshelf.js"></script>
+    <script src="~/Content/js/jquery.tmpl.js"></script>
+
+    <!--Vue.js组件：我发布的组件-->
+    <div id="releaseTemplate" style="display: none">
+        <div>
+            <div>
+                <img v-bind:src="['/Content/productImg/' + product.ProImgUrl]" style="width:30px; height:40px" />
+            </div>
+            <div>
+                {{product.ProID}}
+            </div>
+            <div>
+                ￥{{product.ProNewPrice}}
+            </div>
+            <div>
+                {{product.ProName}}
+            </div>
+        </div>
+    </div>
+
+    <!--我买到的模版-->
+    <div id="buyTemplate" style="display: none">
+        <div>
+            <div>
+                <img v-bind:src="['/Content/productImg/' + product.ProImgUrl]" style="width:30px; height:40px" />
+            </div>
+            <div>
+                {{product.ProID}}
+            </div>
+            <div>
+                ￥{{product.ProNewPrice}}
+            </div>
+            <div>
+                {{product.ProName}}
+            </div>
+        </div>
+    </div>
+
+    <!--我卖出的模版-->
+    <div id="sellTemplate" style="display: none">
+        <div>
+            <div>
+                <img v-bind:src="['/Content/productImg/' + product.ProImgUrl]" style="width:30px; height:40px" />
+            </div>
+            <div>
+                {{product.ProID}}
+            </div>
+            <div>
+                ￥{{product.ProNewPrice}}
+            </div>
+            <div>
+                {{product.ProName}}
+            </div>
+        </div>
+    </div>
+
+    <!--我的收藏模版 -->
+    <div id="favoriteTemplate" style="display: none">
+        <div>
+            <div>
+                <img v-bind:src="['/Content/productImg/' + product.ProImgUrl]" style="width:30px; height:40px" />
+            </div>
+            <div>
+                {{product.ProID}}
+            </div>
+            <div>
+                ￥{{product.ProNewPrice}}
+            </div>
+            <div>
+                {{product.ProName}}
+            </div>
+        </div>
+    </div>
+
+
+    <!--没有数据的时候的模版-->
+    <div id="favoriteTemplate" style="display: none">
+        <div>
+            <div class="no-item">
+                您还没有${opt}过任何产品
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        /*
+        另外由于 template 部分因为比较复杂，就不好写在一个 单引号 ' ' 里维护起来，
+        所以就直接写在html里，然后通过html dom 获取出来，这样编写起来略微容易一点。
+        */
+        //获取5个组件
+        /*
+        var releaseTemplat = $("#releaseTemplate").html();
+        var buyTemplate = $("#buyTemplate").html();
+        var sellTemplate = $("#sellTemplate").html();
+        var favoriteTemplate = $("#favoriteTemplate").html();
+        var noItemTempa = $("#favoriteTemplate").html();
+
+        Vue.component('product1', {
+            props: ['product'],
+            template: releaseTemplate
+        });
+        Vue.component('product', {
+            props: ['product'],
+            template: buyTemplate
+        });
+        Vue.component('product', {
+            props: ['product'],
+            template: sellTemplate
+        });
+        Vue.component('product', {
+            props: ['product'],
+            template: favoriteTemplate
+        });
+        Vue.component('product', {
+            props: ['product'],
+            template: noItemTempa
+        });
+        */
+
+        //核心：使用Vue的计算属性
+        new Vue({
+            el: "#containe",
+            data: {
+                products: [],
+                total: 27,
+                count: 3,
+                pageNo: 0,
+                pagearr: []
+            },
+            mounted: function () {  //表示这个 Vue 对象加载成功了
+                var self = this;
+                var url = "/Users/MyRealseProduct"
+                axios.post(url).then(function (response) {
+                    self.products = response.data["products"];
+                    //console.log(self.products);
+
+                    var ret = self.total % self.count;
+                    var page = 0;
+
+                    if (ret != 0)
+                        page = self.total / self.count + 1;
+                    else
+                        page = self.total / self.count;
+
+                    //console.log(page);
+                    for (var i = 0; i < page; ++i)
+                        self.pagearr[i] = i;
+                })
+            },
+            computed: {
+                subArr: function () {
+                    var temp = this.products.slice(this.pageNo * this.count, (this.pageNo + 1) * this.count);
+                    console.log(temp);
+                    return temp;
+                }
+            }
+        })
+    </script>
+    <script>
+        var user = { template: '<p>用户管理页面的内容</p>' };
+        var second = { template: '<p>产品管理页面的内容</p>' };
+        var order = { template: '<p>订单管理页面的内容</p>' };
+        /*
+        * 定义路由
+        */
+        var routes = [
+            { path: '/', redirect: '/user' }, // 这个表示会默认渲染 /user，没有这个就是空白
+            { path: '/Users/MySellProduct', component: user },
+            { path: '/Users/MyBuyProduct', component: second },
+            { path: '/Users/MyFavoriteProduct', component: order },
+            { path: '/Users/MyRealseProduct', component: order }
+        ];
+        /*
+        * 创建VueRouter实例
+        */
+        var router = new VueRouter({
+            routes: routes
+        });
+        /*
+        * 给vue对象绑定路由
+        */
+        new Vue({
+            el: "#app",
+            router: router
+        })
+
+    </script>
+</body>
+</html>

@@ -141,6 +141,7 @@
     <Compile Include="Controllers\API\UsersController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -275,7 +276,10 @@
     <Content Include="Content\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="Content\js\axios.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
+    <Content Include="Content\js\vue-router.min.js" />
+    <Content Include="Content\js\vue.min.js" />
     <Content Include="Content\userImg\address.png" />
     <Content Include="Content\userImg\boy.png" />
     <Content Include="Content\userImg\call.png" />
@@ -439,16 +443,6 @@
     <Content Include="Content\Admin\iconfont\fonts\icomoon.eot" />
     <Content Include="Content\Admin\iconfont\fonts\icomoon.ttf" />
     <Content Include="Content\Admin\iconfont\fonts\icomoon.woff" />
-    <EntityDeploy Include="Models\ShoppingEntities.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ShoppingEntities.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ShoppingEntities.edmx.diagram">
-      <DependentUpon>ShoppingEntities.edmx</DependentUpon>
-    </Content>
-    <Content Include="Views\Order\Index.cshtml" />
-    <None Include="Properties\PublishProfiles\webConfiguration.pubxml" />
-    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Models\ShoppingEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ShoppingEntities.edmx</DependentUpon>
@@ -459,6 +453,16 @@
       <DependentUpon>ShoppingEntities.edmx</DependentUpon>
       <LastGenOutput>ShoppingEntities.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Order\Index.cshtml" />
+    <EntityDeploy Include="Models\ShoppingEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ShoppingEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ShoppingEntities.edmx.diagram">
+      <DependentUpon>ShoppingEntities.edmx</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\webConfiguration.pubxml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -506,6 +510,8 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Home\_ItemList.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Users\Me2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
