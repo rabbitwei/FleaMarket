@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 using FleaMarket.Models;
 using PagedList;
@@ -135,7 +136,7 @@ namespace FleaMarket.Controllers
                 if (categoryId > 0)
                 {
                     //返回分类后的产品总数，
-                    total = entity.Product.Count(p => p.ProCateg == categoryId);
+                    total = entity.Product.Count(p => p.ProIsSell == false && p.ProCateg == categoryId);
                     lastPage = total / count + 1;
 
                     products = (from c in entity.Category
@@ -146,17 +147,20 @@ namespace FleaMarket.Controllers
                                 select p
                                     ).Skip((start - 1) * count).Take(count).ToList();
 
+                
                 }
                 //否则就查询所有商品显示在最新栏内容里面
                 else {
                     //返回没有分类后的产品总数，
-                    total = entity.Product.Count();
+                    total = entity.Product.Count(p => p.ProIsSell == false);
                     lastPage = total / count + 1;
 
                     products = (from p in entity.Product
                                 orderby p.ProID descending
                                 where p.ProIsSell == false
                                 select p).Skip((start - 1) * count).Take(count).ToList();
+                    total = entity.Product.Count(p => p.ProIsSell == false);
+                    lastPage = total / count + 1;
                     
                 }
 

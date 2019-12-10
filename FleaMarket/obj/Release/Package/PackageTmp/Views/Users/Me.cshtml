@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "我的";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -11,9 +11,13 @@
 <head>
     <title>我的书架</title>
     <link href="~/Content/css/reset.css" rel="stylesheet" />
-    <link href="~/Content/css/myBookshelf.css" rel="stylesheet" />
-    <link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="~/Content/css/my.css" rel="stylesheet" />
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/vue.min.js"></script>
+    <script src="~/Content/js/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
     <style>
         .no-item-list {
@@ -38,17 +42,22 @@
         <p>
             <a href="#" class="name">@Model.UserName</a>
         </p>
+        @*<p>
+
+            </p>*@
         <p>
 
+            <img class="usericon" src="/Content/@Model.UserIcon" />
 
             @if (@Model.UserGender.Equals("男"))
             {
-            <a href="#" class="sex">男</a><img src="~/Content/userImg/boy.png" class="sex-pic" />
+                <a href="#" class="sex">男</a><img src="~/Content/userImg/boy.png" class="sex-pic" />
             }
             else
             {
-            <a href="#" class="sex">女</a><img src="~/Content/userImg/girl.png" class="sex-pic">
+                <a href="#" class="sex">女</a><img src="~/Content/userImg/girl.png" class="sex-pic">
             }
+
         </p>
         <p class="set">
             <a href="/Users/Edit" class="edit">
@@ -83,11 +92,12 @@
 
     <!--用户产品的显示版块-->
     <div id="container">
-        <!-- 我发布的 -->
-        <div id="release-product">
-            <ul class="book-ul" id="releaseProductItems"></ul>
-        </div>
 
+        <div id="release-product">
+            <ul class="book-ul" id="releaseProductItems">
+
+            </ul>
+        </div>
         <!-- 我买到的 -->
         <div id="buy-product">
             <ul class="book-ul" id="buyProductItems"></ul>
@@ -100,7 +110,7 @@
         <div id="favorite-product">
             <ul class="book-ul" id="favoriteProductItems"></ul>
         </div>
-    </div><!-- javascript- -->
+    </div>
 
 
 
@@ -115,6 +125,7 @@
                 <img src="/Content/productImg/${ProImgUrl}">
             </p>
             <h5 class="book-name">${ProName}</h5>
+            <a href="/Users/CancelRelease?pid=${ProID}" class="delete-btn btn btn-danger">下架</a>
             <div class="book-detail">
                 <p>原&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="original-price">${ProOldPrice}</span></p>
                 <p>现&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="book-price">${ProOldPrice}</span></p>
@@ -134,7 +145,7 @@
             <div class="book-detail">
                 <p>卖家：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProWhoUser}</span></p>
                 <p>交易价：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProNewPrice}</span></p>
-                <p>评价：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${Pro}</span></p>
+                <p>我的评价：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${TraComment}</span></p>
             </div>
         </li>
     </script>
@@ -161,6 +172,7 @@
                 <img src="/Content/productImg/${ProImgUrl}">
             </p>
             <h5 class="book-name">${ProName}</h5>
+            <a href="/Users/CancelFavorite?pid=${ProID}" class="fav-btn btn btn-info">取消收藏</a>
             <div class="book-detail">
                 <p>卖家&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProWhoUser}</span></p>
                 <p>原价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="book-price">${ProOldPrice}</span></p>
@@ -183,12 +195,14 @@
 
     <script>
         //使用jquery的ajax来获取用户发布的产品，收藏的产品和购买的产品
-        var url = "/Users/MyRealseProduct";
+        var url = "/Users/MyReleaseProduct";
         $(function () {
             //页面加载成功后先获取发布的产品数据
-            $.post(url, null, function (releaseProduct) {
+            $.post(url, null, function (ret) {
+                var releaseProduct = ret["products"];
+                //console.log(releaseProduct.length);
                 var operate = { "opt": "发布" }
-                if (releaseProduct != null)
+                if (releaseProduct.length != 0)
                     $("#releaseProductItem").tmpl(releaseProduct).appendTo("#releaseProductItems");
                 else
                     $("#noProductItem").tmpl(operate).appendTo("#releaseProductItems");
@@ -199,37 +213,60 @@
         $("#buy-btn").one("click", function () {
             var operate = { "opt": "买" }
             var buyUrl = "/Users/MyBuyProduct";
-            $.post(buyUrl, null, function (buyProduct) {
+            $.post(buyUrl, null, function (ret) {
+                var buyProduct = ret["products"];
                 if (buyProduct.length != 0)
                     $("#buyProductItem").tmpl(buyProduct).appendTo("#buyProductItems");
-                else
+                else {
                     $("#noProductItem").tmpl(operate).appendTo("#buyProductItems");
+                }
             });
         });
+
         //获取用户出售的数据
         $("#sell-btn").one("click", function () {
             var operate = { "opt": "出售" }
             var sellUrl = "/Users/MySellProduct";
-            $.post(sellUrl, null, function (sellProduct) {
+            $.post(sellUrl, null, function (ret) {
+                var sellProduct = ret["products"];
                 if (sellProduct.length != 0)
                     $("#sellProductItem").tmpl(sellProduct).appendTo("#sellProductItems");
                 else
                     $("#noProductItem").tmpl(operate).appendTo("#sellProductItems");
             });
         })
+
         //获取用户收藏的数据
         $("#favorite-btn").one("click", function () {
             var operate = { "opt": "收藏" }
             var favUrl = "/Users/MyFavoriteProduct";
-            $.post(favUrl, null, function (favProduct) {
+            $.post(favUrl, null, function (ret) {
+                var favProduct = ret["products"];
+                console.log(favProduct.length);
                 if (favProduct.length != 0)
                     $("#favoriteProductItem").tmpl(favProduct).appendTo("#favoriteProductItems");
                 else
                     $("#noProductItem").tmpl(operate).appendTo("#favoriteProductItems");
             });
-        })
-
+        });
+        /*
+        function delRelease(pid) {
+            var url = "/Users/CancelRelease"
+            var data = { "pid": pid };
+            $.get(url, data, null);
+            window.location.reload();
+        }
+        function calFav(pid) {
+            var url = "/Users/CancelFavorite"
+            var data = { "pid": pid };
+            $.get(url, data, null);
+            window.location.reload();
+        }
+        */
     </script>
+
+
+
 
 </body>
 </html>

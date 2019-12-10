@@ -52,7 +52,7 @@ namespace FleaMarket.Controllers
         /// <returns></returns>
         [HttpPost]
         public ActionResult Detail(string proId, string sellerId)
-        {  
+        {
             //1. 登录判断
             if (!IsLogined())
             {
@@ -61,13 +61,16 @@ namespace FleaMarket.Controllers
 
             
             int pid = 0;
+
             if (!int.TryParse(proId, out pid))
-                return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+                return Content("<script>alert('购买失败！');window.location.href='/Home/Index'</script>");
+
+            string backUrl = "/Product/Detail/" + pid; 
 
             //该产品的发布者
             int sellId = 0;
             if (!int.TryParse(sellerId, out sellId))
-                return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+                return Content("<script>alert('购买失败！');window.location.href='" + backUrl + "'</script>");
 
 
             using (ShoppingEntities se = new ShoppingEntities())
@@ -75,12 +78,12 @@ namespace FleaMarket.Controllers
                 //查询是否有指定的产品
                 var proEntity = se.Product.FirstOrDefault(p => p.ProID == pid);
                 if (proEntity == null)
-                    return Content("<script>alert('没有该产品！');window.location.href='/Product/Detail'</script>");
+                    return Content("<script>alert('没有该产品！');window.location.href='/Home/Index'</script>");
 
                 //查询该产品是否是指定的发布用户
                 var userEntity = se.Product.FirstOrDefault(p => p.ProWhoUser == sellId);
                 if (userEntity == null)
-                    return Content("<script>alert('卖家没有发布过这个产品！');window.location.href='/Product/Detail'</script>");
+                    return Content("<script>alert('卖家没有发布过这个产品！');window.location.href='/Home/Index'</script>");
                 
 
 
@@ -100,7 +103,7 @@ namespace FleaMarket.Controllers
 
                 //买家和卖家不能是同一个人
                 if (sellId == buyUserId)
-                    return Content("<script>alert('不能购买自己发布的商品');window.location.href='/Users/Login'</script>");
+                    return Content("<script>alert('不能购买自己发布的商品');window.location.href='" + backUrl + "'</script>");
 
 
                 //订单需要的字段：产品id， 买家id， 卖家id
@@ -119,7 +122,7 @@ namespace FleaMarket.Controllers
                 }
                 else
                 {
-                    return Content("<script>alert('购买失败！');window.location.href='/Product/Detail'</script>");
+                    return Content("<script>alert('购买失败！');window.location.href='/Home/Index'</script>");
                 }
             }
         }

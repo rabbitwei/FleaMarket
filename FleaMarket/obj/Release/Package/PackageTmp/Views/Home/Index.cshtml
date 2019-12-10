@@ -1,15 +1,8 @@
-﻿
-
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
-<!--分页-->
-<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
-<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
-<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
-<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+﻿<script src="~/Content/js/jquery-3.2.js"></script>
+@*<script src="~/Scripts/jquery.validate.js"></script>*@
+@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+<script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+<link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
 <!--该插件需要在最后-->
 <script src="~/Content/js/jquery.tmpl.js"></script>
@@ -17,7 +10,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_IndexLayout.cshtml";
 }
 
 <!--分类选项卡-->
@@ -81,7 +74,7 @@
                 <span onclick='getProduct("${prov}", "${categId}")' aria-hidden="true">&laquo;</span>
 
             </li>
-
+            <li><span>${page}/${lastPage}</span></li>
             <li>
                 <span onclick='getProduct("${next}", "${categId}")' aria-hidden="true">&raquo;</span>
             </li>
@@ -107,11 +100,19 @@
         //页面加载成功后先获取发布的产品数据
         $.post(url, null, function (data) {
             console.log(data["products"]);
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
+
+            var lastPage = 0;
+            //说明还有剩余的
+            var ret = data["total"] % data["count"];
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
             //修改分页的产品类型
             var listCountData =
                 {
                     "categId": data["categId"],
+                    "page": data["start"],
                     "next": data["start"] + 1,
                     "prov": data["start"],
                     "lastPage": lastPage
@@ -127,7 +128,6 @@
         });
     });
 
-
     //获取产品分类后的数据
     function getProductByCategory(categId) {
         //点击选项卡的时候，通过分类 id 来获取指定数据,page默认为1
@@ -139,24 +139,43 @@
         //$("#listCountTemplete").tmpl(null).appendTo("#listCount");
 
         $.post(url, param, function (data) {
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
-            if (data["products"].length > 0) {
+            var ret = data["total"] % data["count"];
+            console.log(ret);
+            var lastPage = 0;
 
+            //说明还有剩余的
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
+
+            if (data["products"].length > 0) {
                 var listCountData =
                     {
                         "categId": data["categId"],
+                        "page": data["start"],
                         "next": data["start"] + 1,
                         "prov": data["start"],
                         "lastPage": lastPage
                     };
-                $("#listCount").empty();
-                $("#listCountTemplete").tmpl(listCountData).appendTo("#listCount");
+
+                //只有一页的时候页不显示分页
+                if (data["total"] < data["count"])
+                    $("#listCount").empty();
+                else {
+                    //不止一页的时候
+                    $("#listCount").empty();
+                    $("#listCountTemplete").tmpl(listCountData).appendTo("#listCount");
+                }
 
                 //先清空之前的元素，在添加
                 $("#items").empty();
                 $("#productItem").tmpl(data["products"]).appendTo("#items");
             }
             else {
+                //没有数据，直接不显示分页了
+                $("#listCount").empty();
+
                 $("#items").empty();
                 $("#noProduct").tmpl(null).appendTo("#items");
             }
@@ -173,11 +192,22 @@
         var url = "/Home/getProduct";
 
         $.post(url, data, function (data) {
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
+
+            var ret = data["total"] % data["count"];
+            //console.log(ret);
+            var lastPage = 0;
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
+            console.log(Math.floor(data["total"] / data["count"]));
+            console.log(lastPage);
+
             if (data["products"].length > 0) {
                 var listCountData =
                     {
                         "categId": data["categId"],
+                        "page": data["start"],
                         "next": data["start"] + 1,
                         "prov": data["start"] - 1,
                         "lastPage": lastPage

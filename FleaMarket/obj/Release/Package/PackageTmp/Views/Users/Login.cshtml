@@ -22,7 +22,7 @@
             <p><label class="label_input">验证码</label><input id="vcode" class="text_field" required type="text" name="vcode" placeholder="请输入验证码" /></p>
             <img id="vcodeing" src="/Users/GetValidateCode" onclick="changeCode()" />
             <div class="login_control">
-                <p><label class="login_expires"><input type="checkbox" name="isremember" value="login_expires" />2周内不用登录</label></p>
+                <p><label class="login_expires"><input id="isremember" type="checkbox" value="login_expires" />2周内不用登录</label></p>
                 <br />
                 <input id="btnLogin" type="button" value="登录" />
                 <p><label class="label_logup"><a href="/Users/Register">注册</a></label></p>
@@ -38,8 +38,8 @@
             $("#btnLogin").click(function () {
                 //验证码判断
                 var vcode = $("#vcode").val();
-                console.log("vcode:" + vcode);
-                
+                //console.log("vcode:" + vcode);
+
                 //判断验证码
                 var validateCodeUrl = "/Users/ValidateCode"
 
@@ -47,6 +47,16 @@
                 var loginedIsSuccessUrl = "/Users/LoginIsSuccess";
                 var useraccount = $("#user").val();
                 var userpwd = $("#password").val();
+
+                //获取复选框
+                var isremember = document.getElementById("isremember").checked;
+                if (useraccount.length == 0 || userpwd.length == 0 || vcode.length == 0) {
+                    $("#message").html("请填写完整数据");
+                    return;
+                }
+
+           
+
                 var data = { "vcode": vcode };
                 $.post(validateCodeUrl, data, function (ret) {
                     console.log(JSON.stringify(ret));
@@ -58,7 +68,10 @@
 
                     }
                     if (ret["success"] == true) {
-                        data = { "useraccount": useraccount, "userpwd": userpwd };
+                        if (isremember)
+                            data = { "useraccount": useraccount, "userpwd": userpwd, "isremember": isremember };
+                        else
+                            data = { "useraccount": useraccount, "userpwd": userpwd};
                         $.post(loginedIsSuccessUrl, data, function (ret) {
                             //console.log(JSON.stringify(ret));
                             if (ret["error"] == true) {

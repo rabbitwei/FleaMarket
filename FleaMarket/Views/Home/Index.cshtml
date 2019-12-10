@@ -100,7 +100,14 @@
         //页面加载成功后先获取发布的产品数据
         $.post(url, null, function (data) {
             console.log(data["products"]);
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
+
+            var lastPage = 0;
+            //说明还有剩余的
+            var ret = data["total"] % data["count"];
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
             //修改分页的产品类型
             var listCountData =
                 {
@@ -132,7 +139,15 @@
         //$("#listCountTemplete").tmpl(null).appendTo("#listCount");
 
         $.post(url, param, function (data) {
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
+            var ret = data["total"] % data["count"];
+            console.log(ret);
+            var lastPage = 0;
+
+            //说明还有剩余的
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
 
             if (data["products"].length > 0) {
                 var listCountData =
@@ -177,7 +192,17 @@
         var url = "/Home/getProduct";
 
         $.post(url, data, function (data) {
-            var lastPage = Math.round(data["total"] / data["count"]) + 1;
+
+            var ret = data["total"] % data["count"];
+            //console.log(ret);
+            var lastPage = 0;
+            if (ret < data["count"])
+                lastPage = Math.floor(data["total"] / data["count"]) + 1;
+            else
+                lastPage = Math.floor(data["total"] / data["count"]);
+            console.log(Math.floor(data["total"] / data["count"]));
+            console.log(lastPage);
+
             if (data["products"].length > 0) {
                 var listCountData =
                     {

@@ -128,6 +128,13 @@ namespace FleaMarket.Controllers
                 var favoriteEntity = new Favorite();
                 favoriteEntity.FavUID = userId;
                 favoriteEntity.FavPID = proId;
+
+                //发布用户不可以收藏自己的产品
+                var productEntity = dc.Product.FirstOrDefault(p => p.ProID == proId);
+                if (productEntity.ProWhoUser == userId)
+                    return Content("<script>alert('不可以收藏自己的产品');window.location.href='/Product/Detail/" + pid + "'</script>");
+
+
                 //收藏前先判断是否有重复收藏
                 var favRet = dc.Favorite.FirstOrDefault(fav => fav.FavPID == proId && fav.FavUID == userId);
                 if (favRet != null)
@@ -226,13 +233,13 @@ namespace FleaMarket.Controllers
                 return Content("<script>alert('参数不合法');window.location.href='/Users/Login'</script>");
             }
 
-            //查询用户的收藏，这里不需要判断该产品是否出售了
+            //查询用户的收藏，这里需要判断该产品是否出售了
             using (ShoppingEntities dc = new ShoppingEntities())
             {
                 //用于返回给前端的集合
                 List<Dictionary<String, Object>> favList = new List<Dictionary<String, Object>>();
                 //查询用户收藏的集合
-                var retList = dc.Favorite.Where(fav => fav.FavUID == userid).ToList();
+                var retList = dc.Favorite.Where(fav => fav.FavUID == userid && !fav.Product.ProIsSell).ToList();
                 foreach (var ret in retList)
                     favList.Add(ProductObjectToJson.Convert(ret.Product, null));
 
